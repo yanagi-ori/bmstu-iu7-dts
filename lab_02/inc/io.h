@@ -8,6 +8,6 @@
 
 short int menu(short int *action);
 
-short int load_file();
+short int load_file(table_t *table);
 
 #endif //LAB_02_IO_H

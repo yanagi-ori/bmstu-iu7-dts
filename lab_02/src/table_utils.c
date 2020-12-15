@@ -1,13 +1,22 @@
 //
 // Created by Ivan Bogatyrev on 12/14/2020.
 //
+
 #include "../inc/errors.h"
+#include <stdlib.h>
 #include "../inc/structures.h"
 #include "../inc/table_utils.h"
 
-void table_init(table_t *const table, student_t *const students_arr, keys_t *const keys_arr)
+short table_init(table_t *table)
 {
-    table->students = students_arr;
-    table->keys = keys_arr;
+    table->students = malloc(sizeof(student_t *) * 1);
+    table->keys = malloc(sizeof(keys_t *) * 1);
     table->size = 0;
+
+    if (table->students == NULL || table->keys == NULL)
+    {
+        return MEMORY_ALLOCATION_ERROR;
+    }
+
+    return 0;
 }

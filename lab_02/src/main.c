@@ -8,12 +8,14 @@
 int main()
 {
     table_t table;
-    student_t *students_arr = NULL;
-    keys_t *keys_arr = NULL;
-
-    table_init(&table, students_arr, keys_arr);
 
     short int action, rc;
+
+    rc = table_init(&table);
+    if (rc == MEMORY_ALLOCATION_ERROR)
+    {
+        return MEMORY_ALLOCATION_ERROR;
+    }
 
     while (true)
     {
@@ -27,7 +29,11 @@ int main()
         switch (action)
         {
             case 1:
-                rc = load_file();
+                rc = load_file(&table);
+                if (rc != 0)
+                {
+                    return rc;
+                }
                 break;
             case 2:
                 break;

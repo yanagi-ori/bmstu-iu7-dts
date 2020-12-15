@@ -9,22 +9,22 @@
 
 typedef struct date
 {
-    int year;
-    short int month;
-    short int day;
+    unsigned int year;
+    unsigned short int month;
+    unsigned short int day;
 } date_t;
 
 typedef struct is_dormitory
 {
-    short int dormitory_num;
-    short int room_num;
+    unsigned short int dormitory_num;
+    unsigned short int room_num;
 } is_dormitory_t;
 
 typedef struct is_house
 {
     char *street;
-    short int house_num;
-    short int apartment_num;
+    unsigned short int house_num;
+    unsigned short int apartment_num;
 } is_house_t;
 
 typedef union address
@@ -42,6 +42,7 @@ typedef struct student
     short int age;
     double average_score;
     date_t date;
+    bool is_dormitory;
     address_t address;
 } student_t;
 
