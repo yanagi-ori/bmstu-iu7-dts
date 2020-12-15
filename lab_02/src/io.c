@@ -4,6 +4,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include "../inc/structures.h"
 #include "../inc/io.h"
 #include "../inc/errors.h"
@@ -99,6 +100,8 @@ short int get_student_data(table_t *table, FILE *stream, int i)
     int temp;
     int rc;
 
+    student_t *temp_student = malloc(sizeof(student_t));
+
     if (!stream->_file)
     {
         printf("Enter the student's surname: ");
@@ -107,7 +110,7 @@ short int get_student_data(table_t *table, FILE *stream, int i)
     {
         return IO_TABLE_DATA_READ_ERROR;
     }
-    table->students[i].surname = strdup(buffer);
+    temp_student->surname = strdup(buffer);
 
     if (!stream->_file)
     {
@@ -117,7 +120,7 @@ short int get_student_data(table_t *table, FILE *stream, int i)
     {
         return IO_TABLE_DATA_READ_ERROR;
     }
-    table->students[i].name = strdup(buffer);
+    temp_student->name = strdup(buffer);
 
     if (!stream->_file)
     {
@@ -127,7 +130,7 @@ short int get_student_data(table_t *table, FILE *stream, int i)
     {
         return IO_TABLE_DATA_READ_ERROR;
     }
-    table->students[i].group = (short) temp;
+    temp_student->group = (short) temp;
 
     if (!stream->_file)
     {
@@ -143,11 +146,11 @@ short int get_student_data(table_t *table, FILE *stream, int i)
     }
     if (buffer[0] == 'f')
     {
-        table->students[i].sex = (bool) 0;
+        temp_student->sex = (bool) 0;
     }
     else
     {
-        table->students[i].sex = (bool) 1;
+        temp_student->sex = (bool) 1;
     }
 
     if (!stream->_file)
@@ -162,7 +165,7 @@ short int get_student_data(table_t *table, FILE *stream, int i)
     {
         return IO_TABLE_DATA_READ_ERROR;
     }
-    table->students[i].age = (short) temp;
+    temp_student->age = (short) temp;
 
     double temp_score;
     if (!stream->_file)
@@ -177,7 +180,9 @@ short int get_student_data(table_t *table, FILE *stream, int i)
     {
         return IO_TABLE_DATA_READ_ERROR;
     }
-    table->students[i].average_score = temp_score;
+    temp_student->average_score = temp_score;
+
+    table->students[i] = temp_student;
 
     return 0;
 }
@@ -196,11 +201,11 @@ short int get_address_state(table_t *table, FILE *stream, int i)
     }
     if (buffer[0] == 'd' || strcmp(buffer, "dormitory") == 0)
     {
-        table->students[i].is_dormitory = true;
+        table->students[i]->is_dormitory = true;
     }
     else if (buffer[0] == 'h' || strcmp(buffer, "home") == 0)
     {
-        table->students[i].is_dormitory = false;
+        table->students[i]->is_dormitory = false;
     }
     return 0;
 }
@@ -295,7 +300,7 @@ short int get_table_data(table_t *table, FILE *stream)
         {
             return IO_TABLE_DATA_READ_ERROR;
         }
-        rc = get_date(&table->students[i].date, stream, i);
+        rc = get_date(&table->students[i]->date, stream, i);
         if (rc != 0)
         {
             return rc;
@@ -305,25 +310,25 @@ short int get_table_data(table_t *table, FILE *stream)
         {
             return IO_TABLE_DATA_READ_ERROR;
         }
-        if (table->students[i].is_dormitory)
+        if (table->students[i]->is_dormitory)
         {
-            get_dormitory_data(&table->students[i].address, stream);
+            get_dormitory_data(&table->students[i]->address, stream);
             printf("%s %s %d %d %d %lf %d %d %d dormitory %d %d\n",
-                   table->students[i].surname, table->students[i].name, table->students[i].group,
-                   table->students[i].sex, table->students[i].age, table->students[i].average_score,
-                   table->students[i].date.day, table->students[i].date.month, table->students[i].date.year,
-                   table->students[i].address.dormitory.dormitory_num, table->students[i].address.dormitory.room_num
+                   table->students[i]->surname, table->students[i]->name, table->students[i]->group,
+                   table->students[i]->sex, table->students[i]->age, table->students[i]->average_score,
+                   table->students[i]->date.day, table->students[i]->date.month, table->students[i]->date.year,
+                   table->students[i]->address.dormitory.dormitory_num, table->students[i]->address.dormitory.room_num
             );
         }
         else
         {
-            get_home_address(&table->students[i].address, stream);
+            get_home_address(&table->students[i]->address, stream);
             printf("%s %s %d %d %d %lf %d %d %d home %s %d %d\n",
-                   table->students[i].surname, table->students[i].name, table->students[i].group,
-                   table->students[i].sex, table->students[i].age, table->students[i].average_score,
-                   table->students[i].date.day, table->students[i].date.month, table->students[i].date.year,
-                   table->students[i].address.house.street, table->students[i].address.house.house_num,
-                   table->students[i].address.house.apartment_num
+                   table->students[i]->surname, table->students[i]->name, table->students[i]->group,
+                   table->students[i]->sex, table->students[i]->age, table->students[i]->average_score,
+                   table->students[i]->date.day, table->students[i]->date.month, table->students[i]->date.year,
+                   table->students[i]->address.house.street, table->students[i]->address.house.house_num,
+                   table->students[i]->address.house.apartment_num
             );
         }
     }
@@ -334,19 +339,23 @@ short int get_table_data(table_t *table, FILE *stream)
 
 short int load_file(table_t *table)
 {
+    short int rc;
     //TODO: clear table
     FILE *file = fopen(FILE_NAME, "r");
     if (file == NULL)
     {
         return IO_ERROR;
     }
-    if (get_table_size(table, file) != 0)
+    rc = get_table_size(table, file);
+    if (rc != 0)
     {
-        return IO_FILE_SIZE_ERROR;
+        return rc;
     }
-    if (get_table_data(table, file) != 0)
+    *table->students = malloc(sizeof(student_t *) * table->size);
+    rc = get_table_data(table, file);
+    if (rc != 0)
     {
-        return IO_TABLE_DATA_READ_ERROR;
+        return rc;
     }
 
     return 0;

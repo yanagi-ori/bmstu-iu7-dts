@@ -54,7 +54,7 @@ typedef struct keys
 
 typedef struct table
 {
-    student_t *students;
+    student_t **students;
     keys_t *keys;
     short size;
 } table_t;
