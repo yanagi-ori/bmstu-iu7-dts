@@ -7,4 +7,6 @@
 
 short table_init(table_t *table);
 
+short remove_item(table_t *table, int i);
+
 #endif //LAB_02_TABLE_UTILS_H

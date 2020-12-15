@@ -14,4 +14,6 @@ short int append_student(table_t *table);
 
 void print_table(const table_t table, bool keys);
 
+short int delete_students(table_t *table);
+
 #endif //LAB_02_IO_H

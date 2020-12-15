@@ -20,3 +20,31 @@ short table_init(table_t *table)
 
     return 0;
 }
+
+void free_student(student_t *student)
+{
+    free(student->surname);
+    free(student->name);
+    free(student->address.house.street);
+    free_student(student);
+}
+
+void swap_students(student_t **student_a, student_t **student_b)
+{
+    student_t *temp = *student_a;
+    *student_a = *student_b;
+    *student_b = temp;
+}
+
+short remove_item(table_t *table, int i)
+{
+    student_t **students_array = table->students;
+
+    for (int j = i + 1; j < table->size + 1; j++)
+    {
+        swap_students(&students_array[j - 1], &students_array[j]);
+    }
+    table->size--;
+
+    return 0;
+}

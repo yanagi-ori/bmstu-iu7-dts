@@ -42,6 +42,13 @@ int main()
                     return rc;
                 }
                 break;
+            case 3:
+                rc = delete_students(&table);
+                if (rc != 0)
+                {
+                    return rc;
+                }
+                break;
             case 9:
                 if (!table.students[0])
                 { return TABLE_IS_EMPTY; }
