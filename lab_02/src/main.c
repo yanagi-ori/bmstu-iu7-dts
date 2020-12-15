@@ -104,6 +104,17 @@ int main()
                 }
                 qs_vs_bubble(&table);
                 break;
+            case 8:
+                if (!table.students[0] || !table.size)
+                {
+                    return TABLE_IS_EMPTY;
+                }
+                rc = specified_output(table);
+                if (rc != 0)
+                {
+                    return rc;
+                }
+                break;
             case 9:
                 if (!table.students[0] || !table.size)
                 {

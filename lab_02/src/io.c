@@ -21,9 +21,9 @@ short menu(short int *action)
         printf("3. Remove all students of specified age;\n");
         printf("4. Show sorted by age array of keys\n");
         printf("5. Show sorted by age table;\n");
-//        printf("6. Вывести упорядоченную таблицу (по площади), используя упорядоченый массив ключей.\n");
-//        printf("7. Вывести результаты сравнения эффективности программы при обработке таблицы и массив ключей.\n");
-//        printf("8. Найти все вторичное 2-х комнатное жилье в указанном ценовом диапазоне без животных.\n");
+        printf("6. Show sorted by age table using sorted array of keys;\n");
+        printf("7. Show the results of comparing the efficiency of processing a table and an array of keys;\n");
+        printf("8. List the students living in the dormitory for the specified year of admission;\n");
         printf("9. Show the table;\n");
         printf("0. Exit.\n");
         printf("Enter the number of menu: ");
@@ -428,7 +428,7 @@ void print_table(const table_t table, bool keys)
         printf("Surname: %10s | Name: %s\t| Group: %5hi | Sex: %6s | Age: %2d | Average score: %lf | "
                "Admission date: %2d %2d %4d | Address: %9s ",
                table.students[i]->surname, table.students[i]->name, table.students[i]->group,
-               ((table.students[i]->sex) ? "Female" : "Male"), table.students[i]->age, table.students[i]->average_score,
+               ((table.students[i]->sex) ? "Male" : "Female"), table.students[i]->age, table.students[i]->average_score,
                table.students[i]->date.day, table.students[i]->date.month, table.students[i]->date.year,
                ((table.students[i]->is_dormitory) ? "Dormitory" : "Home"));
 
@@ -461,4 +461,47 @@ void print_sorts_vs_results(uint64_t total_ticks, short sort_type, short table_t
 {
     printf("Sorting %s with %s.\n", table_type ? "table" : "keys array", sort_type ? "QuickSort" : "bubble sort");
     printf("%Ild ticks, %.10lf seconds\n", total_ticks, (double) total_ticks / GHZ);
+}
+
+
+short specified_output(table_t table)
+{
+    int year;
+    printf("Enter the year: ");
+    if (scanf("%d", &year) != 1)
+    {
+        return IO_ERROR;
+    }
+    if (year <= 0)
+    {
+        return IO_DATE_FORMAT_ERROR_YEAR;
+    }
+    for (int i = 0; i < table.size; i++)
+    {
+        if (table.students[i]->date.year == year)
+        {
+            printf("Surname: %10s | Name: %s\t| Group: %5hi | Sex: %6s | Age: %2d | Average score: %lf | "
+                   "Admission date: %2d %2d %4d | Address: %9s ",
+                   table.students[i]->surname, table.students[i]->name, table.students[i]->group,
+                   ((!table.students[i]->sex) ? "Female" : "Male"), table.students[i]->age,
+                   table.students[i]->average_score,
+                   table.students[i]->date.day, table.students[i]->date.month, table.students[i]->date.year,
+                   ((table.students[i]->is_dormitory) ? "Dormitory" : "Home"));
+
+            if (table.students[i]->is_dormitory)
+            {
+                printf("| Dormitory number: %5d | Room number: %d\n",
+                       table.students[i]->address.dormitory.dormitory_num,
+                       table.students[i]->address.dormitory.room_num);
+            }
+            else
+            {
+                printf("| Street: %15s | House: %d\t| Apartment: %d\n",
+                       table.students[i]->address.house.street,
+                       table.students[i]->address.house.house_num,
+                       table.students[i]->address.house.apartment_num);
+            }
+        }
+    }
+    return 0;
 }

@@ -22,4 +22,6 @@ void print_table_keys(const table_t table);
 
 void print_sorts_vs_results(uint64_t total_ticks, short sort_type, short table_type);
 
+short specified_output(table_t table);
+
 #endif //LAB_02_IO_H
