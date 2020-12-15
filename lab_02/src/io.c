@@ -382,7 +382,7 @@ short int append_student(table_t *table)
     {
         return IO_TABLE_DATA_READ_ERROR;
     }
-    if (table->students[table->size-1]->is_dormitory)
+    if (table->students[table->size - 1]->is_dormitory)
     {
         get_dormitory_data(&table->students[i]->address, stdin);
         printf("%s %s %d %d %d %lf %d %d %d dormitory %d %d\n",
@@ -404,4 +404,35 @@ short int append_student(table_t *table)
         );
     }
     return 0;
+}
+
+void print_table(const table_t table, bool keys)
+{
+    puts("");
+
+    for (int k = 0; k < table.size; k++)
+    {
+        int i = (keys) ? table.keys[k].id : k;
+
+        printf("Surname: %10s | Name: %s\t| Group: %5hi | Sex: %6s | Age: %2d | Average score: %lf | "
+               "Admission date: %2d %2d %4d | Address: %9s ",
+               table.students[i]->surname, table.students[i]->name, table.students[i]->group,
+               ((table.students[i]->sex) ? "Female" : "Male"), table.students[i]->age, table.students[i]->average_score,
+               table.students[i]->date.day, table.students[i]->date.month, table.students[i]->date.year,
+               ((table.students[i]->is_dormitory) ? "Dormitory" : "Home"));
+
+        if (table.students[i]->is_dormitory)
+        {
+            printf("| Dormitory number: %5d | Room number: %d\n",
+                   table.students[i]->address.dormitory.dormitory_num,
+                   table.students[i]->address.dormitory.room_num);
+        }
+        else
+        {
+            printf("| Street: %15s | House: %d\t| Apartment: %d\n",
+                   table.students[i]->address.house.street,
+                   table.students[i]->address.house.house_num,
+                   table.students[i]->address.house.apartment_num);
+        }
+    }
 }

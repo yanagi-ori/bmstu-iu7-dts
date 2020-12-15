@@ -41,6 +41,12 @@ int main()
                 {
                     return rc;
                 }
+                break;
+            case 9:
+                if (!table.students[0])
+                { return TABLE_IS_EMPTY; }
+                print_table(table, false);
+                break;
             case 0:
                 return 0;
             default:
