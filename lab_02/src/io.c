@@ -313,23 +313,23 @@ short int get_table_data(table_t *table, FILE *stream)
         if (table->students[i]->is_dormitory)
         {
             get_dormitory_data(&table->students[i]->address, stream);
-            printf("%s %s %d %d %d %lf %d %d %d dormitory %d %d\n",
-                   table->students[i]->surname, table->students[i]->name, table->students[i]->group,
-                   table->students[i]->sex, table->students[i]->age, table->students[i]->average_score,
-                   table->students[i]->date.day, table->students[i]->date.month, table->students[i]->date.year,
-                   table->students[i]->address.dormitory.dormitory_num, table->students[i]->address.dormitory.room_num
-            );
+//            printf("%s %s %d %d %d %lf %d %d %d dormitory %d %d\n",
+//                   table->students[i]->surname, table->students[i]->name, table->students[i]->group,
+//                   table->students[i]->sex, table->students[i]->age, table->students[i]->average_score,
+//                   table->students[i]->date.day, table->students[i]->date.month, table->students[i]->date.year,
+//                   table->students[i]->address.dormitory.dormitory_num, table->students[i]->address.dormitory.room_num
+//            );
         }
         else
         {
             get_home_address(&table->students[i]->address, stream);
-            printf("%s %s %d %d %d %lf %d %d %d home %s %d %d\n",
-                   table->students[i]->surname, table->students[i]->name, table->students[i]->group,
-                   table->students[i]->sex, table->students[i]->age, table->students[i]->average_score,
-                   table->students[i]->date.day, table->students[i]->date.month, table->students[i]->date.year,
-                   table->students[i]->address.house.street, table->students[i]->address.house.house_num,
-                   table->students[i]->address.house.apartment_num
-            );
+//            printf("%s %s %d %d %d %lf %d %d %d home %s %d %d\n",
+//                   table->students[i]->surname, table->students[i]->name, table->students[i]->group,
+//                   table->students[i]->sex, table->students[i]->age, table->students[i]->average_score,
+//                   table->students[i]->date.day, table->students[i]->date.month, table->students[i]->date.year,
+//                   table->students[i]->address.house.street, table->students[i]->address.house.house_num,
+//                   table->students[i]->address.house.apartment_num
+//            );
         }
     }
 
@@ -358,6 +358,7 @@ short int load_file(table_t *table)
         return rc;
     }
 
+    printf("Done\n\n");
     return 0;
 }
 
@@ -366,43 +367,46 @@ short int append_student(table_t *table)
 {
     int i = table->size;
     short int rc;
-    table->students = realloc(table->students, sizeof(student_t *) * (++table->size));
-    rc = get_student_data(table, stdin, table->size - 1);
+    *table->students = realloc(*table->students, sizeof(student_t *) * (i + 1));
+    table->size++;
+    rc = get_student_data(table, stdin, i);
     if (rc == IO_TABLE_DATA_READ_ERROR)
     {
         return IO_TABLE_DATA_READ_ERROR;
     }
-    rc = get_date(&table->students[table->size - 1]->date, stdin, table->size - 1);
+    rc = get_date(&table->students[i]->date, stdin, i);
     if (rc != 0)
     {
         return rc;
     }
-    rc = get_address_state(table, stdin, table->size - 1);
+    rc = get_address_state(table, stdin, i);
     if (rc == IO_TABLE_DATA_READ_ERROR)
     {
         return IO_TABLE_DATA_READ_ERROR;
     }
-    if (table->students[table->size - 1]->is_dormitory)
+    if (table->students[i]->is_dormitory)
     {
         get_dormitory_data(&table->students[i]->address, stdin);
-        printf("%s %s %d %d %d %lf %d %d %d dormitory %d %d\n",
-               table->students[i]->surname, table->students[i]->name, table->students[i]->group,
-               table->students[i]->sex, table->students[i]->age, table->students[i]->average_score,
-               table->students[i]->date.day, table->students[i]->date.month, table->students[i]->date.year,
-               table->students[i]->address.dormitory.dormitory_num, table->students[i]->address.dormitory.room_num
-        );
+//        printf("%s %s %d %d %d %lf %d %d %d dormitory %d %d\n",
+//               table->students[i]->surname, table->students[i]->name, table->students[i]->group,
+//               table->students[i]->sex, table->students[i]->age, table->students[i]->average_score,
+//               table->students[i]->date.day, table->students[i]->date.month, table->students[i]->date.year,
+//               table->students[i]->address.dormitory.dormitory_num, table->students[i]->address.dormitory.room_num
+//        );
     }
     else
     {
         get_home_address(&table->students[i]->address, stdin);
-        printf("%s %s %d %d %d %lf %d %d %d home %s %d %d\n",
-               table->students[i]->surname, table->students[i]->name, table->students[i]->group,
-               table->students[i]->sex, table->students[i]->age, table->students[i]->average_score,
-               table->students[i]->date.day, table->students[i]->date.month, table->students[i]->date.year,
-               table->students[i]->address.house.street, table->students[i]->address.house.house_num,
-               table->students[i]->address.house.apartment_num
-        );
+//        printf("%s %s %d %d %d %lf %d %d %d home %s %d %d\n",
+//               table->students[i]->surname, table->students[i]->name, table->students[i]->group,
+//               table->students[i]->sex, table->students[i]->age, table->students[i]->average_score,
+//               table->students[i]->date.day, table->students[i]->date.month, table->students[i]->date.year,
+//               table->students[i]->address.house.street, table->students[i]->address.house.house_num,
+//               table->students[i]->address.house.apartment_num
+//        );
     }
+
+    printf("Done\n\n");
     return 0;
 }
 
@@ -435,4 +439,5 @@ void print_table(const table_t table, bool keys)
                    table.students[i]->address.house.apartment_num);
         }
     }
+    printf("\n");
 }
