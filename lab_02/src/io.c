@@ -326,9 +326,6 @@ short int get_table_data(table_t *table, FILE *stream)
                    table->students[i].address.house.apartment_num
             );
         }
-
-
-        break;
     }
 
 
