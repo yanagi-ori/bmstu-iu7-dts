@@ -10,4 +10,6 @@ short int menu(short int *action);
 
 short int load_file(table_t *table);
 
+short int append_student(table_t *table);
+
 #endif //LAB_02_IO_H

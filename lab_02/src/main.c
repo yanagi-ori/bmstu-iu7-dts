@@ -36,15 +36,16 @@ int main()
                 }
                 break;
             case 2:
-                break;
-            case 3:
-                break;
+                rc = append_student(&table);
+                if (rc != 0)
+                {
+                    return rc;
+                }
+            case 0:
+                return 0;
             default:
+                printf("Invalid menu number\n");
                 return INVALID_INPUT_DATA;
         }
-        break;
-
     }
-
-    return 0;
 }

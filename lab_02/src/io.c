@@ -17,10 +17,10 @@ short int menu(short int *action)
         printf("2. Add student to the bottom of the table;\n");
         printf("3. Delete students by the value;\n");
         printf("4. Show sorted by average score table;\n");
-        printf("5. Вывести упорядоченную (по площади) таблицу.\n");
-        printf("6. Вывести упорядоченную таблицу (по площади), используя упорядоченый массив ключей.\n");
-        printf("7. Вывести результаты сравнения эффективности программы при обработке таблицы и массив ключей.\n");
-        printf("8. Найти все вторичное 2-х комнатное жилье в указанном ценовом диапазоне без животных.\n");
+//        printf("5. Вывести упорядоченную (по площади) таблицу.\n");
+//        printf("6. Вывести упорядоченную таблицу (по площади), используя упорядоченый массив ключей.\n");
+//        printf("7. Вывести результаты сравнения эффективности программы при обработке таблицы и массив ключей.\n");
+//        printf("8. Найти все вторичное 2-х комнатное жилье в указанном ценовом диапазоне без животных.\n");
         printf("9. Show the table;\n");
         printf("0. Exit.\n");
         printf("Enter the number of menu: ");
@@ -358,5 +358,50 @@ short int load_file(table_t *table)
         return rc;
     }
 
+    return 0;
+}
+
+
+short int append_student(table_t *table)
+{
+    int i = table->size;
+    short int rc;
+    table->students = realloc(table->students, sizeof(student_t *) * (++table->size));
+    rc = get_student_data(table, stdin, table->size - 1);
+    if (rc == IO_TABLE_DATA_READ_ERROR)
+    {
+        return IO_TABLE_DATA_READ_ERROR;
+    }
+    rc = get_date(&table->students[table->size - 1]->date, stdin, table->size - 1);
+    if (rc != 0)
+    {
+        return rc;
+    }
+    rc = get_address_state(table, stdin, table->size - 1);
+    if (rc == IO_TABLE_DATA_READ_ERROR)
+    {
+        return IO_TABLE_DATA_READ_ERROR;
+    }
+    if (table->students[table->size-1]->is_dormitory)
+    {
+        get_dormitory_data(&table->students[i]->address, stdin);
+        printf("%s %s %d %d %d %lf %d %d %d dormitory %d %d\n",
+               table->students[i]->surname, table->students[i]->name, table->students[i]->group,
+               table->students[i]->sex, table->students[i]->age, table->students[i]->average_score,
+               table->students[i]->date.day, table->students[i]->date.month, table->students[i]->date.year,
+               table->students[i]->address.dormitory.dormitory_num, table->students[i]->address.dormitory.room_num
+        );
+    }
+    else
+    {
+        get_home_address(&table->students[i]->address, stdin);
+        printf("%s %s %d %d %d %lf %d %d %d home %s %d %d\n",
+               table->students[i]->surname, table->students[i]->name, table->students[i]->group,
+               table->students[i]->sex, table->students[i]->age, table->students[i]->average_score,
+               table->students[i]->date.day, table->students[i]->date.month, table->students[i]->date.year,
+               table->students[i]->address.house.street, table->students[i]->address.house.house_num,
+               table->students[i]->address.house.apartment_num
+        );
+    }
     return 0;
 }
