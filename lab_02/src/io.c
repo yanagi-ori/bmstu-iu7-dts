@@ -10,15 +10,17 @@
 #include "../inc/errors.h"
 #include "../inc/table_utils.h"
 
-short int menu(short int *action)
+#define GHZ 1500000000
+
+short menu(short int *action)
 {
     {
         printf("Menu: \n");
         printf("1. Load data from file;\n");
         printf("2. Add student to the bottom of the table;\n");
         printf("3. Remove all students of specified age;\n");
-        printf("4. Show sorted by average score table;\n");
-//        printf("5. Вывести упорядоченную (по площади) таблицу.\n");
+        printf("4. Show sorted by age array of keys\n");
+        printf("5. Show sorted by age table;\n");
 //        printf("6. Вывести упорядоченную таблицу (по площади), используя упорядоченый массив ключей.\n");
 //        printf("7. Вывести результаты сравнения эффективности программы при обработке таблицы и массив ключей.\n");
 //        printf("8. Найти все вторичное 2-х комнатное жилье в указанном ценовом диапазоне без животных.\n");
@@ -39,7 +41,7 @@ short int menu(short int *action)
     return 0;
 }
 
-short int get_table_size(table_t *table, FILE *file)
+short get_table_size(table_t *table, FILE *file)
 {
     if (fscanf(file, "%hi", &table->size) != 1)
     {
@@ -52,7 +54,7 @@ short int get_table_size(table_t *table, FILE *file)
     return 0;
 }
 
-short int get_date(date_t *date, FILE *stream, int i)
+short get_date(date_t *date, FILE *stream, int i)
 {
 
     if (!stream->_file)
@@ -95,11 +97,10 @@ short int get_date(date_t *date, FILE *stream, int i)
     return 0;
 }
 
-short int get_student_data(table_t *table, FILE *stream, int i)
+short get_student_data(table_t *table, FILE *stream, int i)
 {
     char buffer[100];
     int temp;
-    int rc;
 
     student_t *temp_student = malloc(sizeof(student_t));
 
@@ -188,7 +189,7 @@ short int get_student_data(table_t *table, FILE *stream, int i)
     return 0;
 }
 
-short int get_address_state(table_t *table, FILE *stream, int i)
+short get_address_state(table_t *table, FILE *stream, int i)
 {
     char buffer[100];
 
@@ -211,7 +212,7 @@ short int get_address_state(table_t *table, FILE *stream, int i)
     return 0;
 }
 
-short int get_dormitory_data(address_t *address, FILE *stream)
+short get_dormitory_data(address_t *address, FILE *stream)
 {
     int temp;
     if (!stream->_file)
@@ -245,7 +246,7 @@ short int get_dormitory_data(address_t *address, FILE *stream)
     return 0;
 }
 
-short int get_home_address(address_t *address, FILE *stream)
+short get_home_address(address_t *address, FILE *stream)
 {
     char buffer[100];
     int temp;
@@ -291,10 +292,10 @@ short int get_home_address(address_t *address, FILE *stream)
     return 0;
 }
 
-short int get_table_data(table_t *table, FILE *stream)
+short get_table_data(table_t *table, FILE *stream)
 {
     short int rc = 0;
-    for (int i = 0; i < table->size; i++)
+    for (short i = 0; i < table->size; i++)
     {
         rc = get_student_data(table, stream, i);
         if (rc == IO_TABLE_DATA_READ_ERROR)
@@ -314,34 +315,22 @@ short int get_table_data(table_t *table, FILE *stream)
         if (table->students[i]->is_dormitory)
         {
             get_dormitory_data(&table->students[i]->address, stream);
-//            printf("%s %s %d %d %d %lf %d %d %d dormitory %d %d\n",
-//                   table->students[i]->surname, table->students[i]->name, table->students[i]->group,
-//                   table->students[i]->sex, table->students[i]->age, table->students[i]->average_score,
-//                   table->students[i]->date.day, table->students[i]->date.month, table->students[i]->date.year,
-//                   table->students[i]->address.dormitory.dormitory_num, table->students[i]->address.dormitory.room_num
-//            );
         }
         else
         {
             get_home_address(&table->students[i]->address, stream);
-//            printf("%s %s %d %d %d %lf %d %d %d home %s %d %d\n",
-//                   table->students[i]->surname, table->students[i]->name, table->students[i]->group,
-//                   table->students[i]->sex, table->students[i]->age, table->students[i]->average_score,
-//                   table->students[i]->date.day, table->students[i]->date.month, table->students[i]->date.year,
-//                   table->students[i]->address.house.street, table->students[i]->address.house.house_num,
-//                   table->students[i]->address.house.apartment_num
-//            );
         }
-    }
 
+        update_keys(table, i, i, table->students[i]->age);
+    }
 
     return rc;
 }
 
-short int load_file(table_t *table)
+short load_file(table_t *table)
 {
     short int rc;
-    //TODO: clear table
+    free_table(table);
     FILE *file = fopen(FILE_NAME, "r");
     if (file == NULL)
     {
@@ -353,17 +342,19 @@ short int load_file(table_t *table)
         return rc;
     }
     *table->students = malloc(sizeof(student_t *) * table->size);
+    table->keys = malloc(sizeof(keys_t) * table->size);
     rc = get_table_data(table, file);
     if (rc != 0)
     {
         return rc;
     }
 
+    fclose(file);
     printf("Done\n\n");
     return 0;
 }
 
-short int append_student(table_t *table)
+short append_student(table_t *table)
 {
     int i = table->size;
     short int rc;
@@ -393,11 +384,13 @@ short int append_student(table_t *table)
         get_home_address(&table->students[i]->address, stdin);
     }
 
+    update_keys(table, i, i, table->students[i]->age);
+
     printf("Done\n\n");
     return 0;
 }
 
-short int delete_students(table_t *table)
+short delete_students(table_t *table)
 {
     printf("Enter the age to delete: ");
     int age;
@@ -414,7 +407,9 @@ short int delete_students(table_t *table)
             remove_item(table, j);
         }
         else
-        { j++; }
+        {
+            j++;
+        }
 
     }
 
@@ -454,3 +449,16 @@ void print_table(const table_t table, bool keys)
     printf("\n");
 }
 
+void print_table_keys(const table_t table)
+{
+    for (int i = 0; i < table.size; i++)
+    {
+        printf("Key: %3d | Age: %5d |\n", table.keys[i].id, table.keys[i].age);
+    }
+}
+
+void print_sorts_vs_results(uint64_t total_ticks, short sort_type, short table_type)
+{
+    printf("Sorting %s with %s.\n", table_type ? "table" : "keys array", sort_type ? "QuickSort" : "bubble sort");
+    printf("%Ild ticks, %.10lf seconds\n", total_ticks, (double) total_ticks / GHZ);
+}

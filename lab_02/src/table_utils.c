@@ -23,10 +23,29 @@ short table_init(table_t *table)
 
 void free_student(student_t *student)
 {
-    free(student->surname);
-    free(student->name);
-    free(student->address.house.street);
-    free_student(student);
+    if (student->surname)
+    {
+        free(student->surname);
+    }
+    if (student->name)
+    {
+        free(student->name);
+    }
+    if (!student->is_dormitory)
+    {
+        free(student->address.house.street);
+    }
+    free(student);
+}
+
+void free_table(table_t *table)
+{
+    for (int i = 0; i < table->size; i++)
+    {
+        free_student(table->students[i]);
+    }
+    free(table->keys);
+    table->size = 0;
 }
 
 void swap_students(student_t **student_a, student_t **student_b)
@@ -36,6 +55,13 @@ void swap_students(student_t **student_a, student_t **student_b)
     *student_b = temp;
 }
 
+void swap_keys(keys_t *key_a, keys_t *key_b)
+{
+    keys_t temp = *key_a;
+    *key_a = *key_b;
+    *key_b = temp;
+}
+
 short remove_item(table_t *table, int i)
 {
     student_t **students_array = table->students;
@@ -43,8 +69,16 @@ short remove_item(table_t *table, int i)
     for (int j = i + 1; j < table->size + 1; j++)
     {
         swap_students(&students_array[j - 1], &students_array[j]);
+        swap_keys(&table->keys[j - 1], &table->keys[j]);
     }
     table->size--;
 
     return 0;
 }
+
+void update_keys(table_t *table, const short index, const short id, const short age)
+{
+    table->keys[index].id = id;
+    table->keys[index].age = age;
+}
+
