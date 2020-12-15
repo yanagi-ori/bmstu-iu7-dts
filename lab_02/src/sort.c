@@ -53,26 +53,6 @@ static void swap(bool table, void *val1, void *val2)
 }
 
 
-//void bubble_sort(void *base, size_t nmemb, size_t size, int (*compare)(const void *, const void *), bool table)
-//{
-//    student_t *student = (student_t *) base;
-//    char *right = (char *) base + size * (nmemb);
-//    for (char *left = (char *) base + size; left < right;)
-//    {
-//
-//        for (char *i = left; i > (char *) base;)
-//        {
-//            char *temp = i - size;
-//            if ((compare)((void *) i, (void *) temp) <= 0)
-//            {
-//                swap(table, &i, &temp);
-//            }
-//            i = i - size;
-//        }
-//        left = left + size;
-//    }
-//}
-
 void bubble_sort_table(student_t **students_array, int len)
 {
     for (int i = 1; i < len; i++)
