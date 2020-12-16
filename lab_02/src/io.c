@@ -144,7 +144,7 @@ short get_student_data(table_t *table, FILE *stream, int i)
     {
         printf("Enter the student's sex ( m / f ): ");
     }
-    if (fscanf(stream, "%s", buffer) != 1)
+    if (fscanf(stream, "%99s", buffer) != 1)
     {
         free(temp_student->surname);
         free(temp_student->name);
