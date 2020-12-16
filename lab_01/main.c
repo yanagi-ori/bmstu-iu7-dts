@@ -32,29 +32,9 @@ int main()
 
     short int code_error = integer_check(integer_raw);
     short int fl = 0;
-    if (code_error != 0)
+    if (code_error == 1)
     {
-        if (code_error == INPUT_FORBIDDEN_SYMBOL)
-        {
-            printf("ERROR: forbidden symbol int the user input\n");
-        }
-        else if (code_error == INPUT_E_ERROR)
-        {
-            printf("ERROR: there is no \"E\" symbol in the user input\n");
-        }
-        else if (code_error == INPUT_SIGN_ERROR)
-        {
-            printf("ERROR: the number was entered in incorrect form\n");
-        }
-        else if (code_error == INPUT_DOTS_IN_DEGREE)
-        {
-            printf("ERROR: float number in the degree\n");
-        }
-        else if (code_error == INPUT_DOTS_IN_MANTISSA)
-        {
-            printf("ERROR: an extra dot was found in mantissa\n");
-        }
-
+        printf("ERROR: invalid input of an integer number\n");
         return code_error;
     }
 

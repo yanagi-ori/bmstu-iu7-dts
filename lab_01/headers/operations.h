@@ -18,7 +18,5 @@ void null_round(number_structure *result_number, short int index);
 
 void rounding(number_structure *number, unsigned short int end_ind, short int flag);
 
-void simplify_int(number_structure *integer);
-
 #endif
 

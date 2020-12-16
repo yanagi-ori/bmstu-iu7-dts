@@ -178,22 +178,3 @@ void move_to_left(char *mantissa)
     }
     mantissa[len - 1] = '\0';
 }
-
-void simplify_int(number_structure *integer)
-{
-    unsigned short int counter_left = 0;
-    null_counter(integer->mantissa, 0, &counter_left, 1);
-    while (integer->degree != 0)
-    {
-        if (counter_left > 0)
-        {
-            move_to_left(integer->mantissa);
-            counter_left--;
-        }
-        else
-        {
-            integer->mantissa[strlen(integer->mantissa)] = '0';
-        }
-        integer->degree--;
-    }
-}
