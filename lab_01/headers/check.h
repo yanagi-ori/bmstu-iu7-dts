@@ -15,4 +15,6 @@ short int integer_e_check(number_structure integer);
 
 int check_expon(char *num, short int cur_len, short int len);
 
+short integer_check(char *integer_raw);
+
 #endif

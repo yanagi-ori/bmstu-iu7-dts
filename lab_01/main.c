@@ -30,7 +30,7 @@ int main()
         return INTEGER_INPUT_ERROR;
     }
 
-    short int code_error = input_check(integer_raw);
+    short int code_error = integer_check(integer_raw);
     short int fl = 0;
     if (code_error != 0)
     {

@@ -91,6 +91,19 @@ short int check_sign(const char item)
 }
 
 
+short integer_check(char *integer_raw)
+{
+    for (int i = 1; i < strlen(integer_raw); i++)
+    {
+        if (!isdigit(integer_raw[i]))
+        {
+            return 1;
+        }
+    }
+
+    return 0;
+}
+
 short int input_check(char *float_number)
 {
     short int index = 0, es = 0, dots = 0;
