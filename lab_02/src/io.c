@@ -108,7 +108,7 @@ short get_student_data(table_t *table, FILE *stream, int i)
     {
         printf("Enter the student's surname: ");
     }
-    if (fscanf(stream, "%s", buffer) != 1)
+    if (fscanf(stream, "%99s", buffer) != 1)
     {
         free(temp_student);
         return IO_TABLE_DATA_READ_ERROR;
@@ -119,7 +119,7 @@ short get_student_data(table_t *table, FILE *stream, int i)
     {
         printf("Enter the student's name: ");
     }
-    if (fscanf(stream, "%s", buffer) != 1)
+    if (fscanf(stream, "%99s", buffer) != 1)
     {
         free(temp_student->surname);
         free(temp_student);
