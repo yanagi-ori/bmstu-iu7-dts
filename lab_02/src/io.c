@@ -279,7 +279,7 @@ short get_home_address(address_t *address, FILE *stream)
     {
         printf("Please, enter the street: ");
     }
-    if (fscanf(stream, "%s", buffer) != 1)
+    if (fscanf(stream, "%99s", buffer) != 1)
     {
         return IO_TABLE_DATA_READ_ERROR;
     }
