@@ -314,11 +314,19 @@ short get_table_data(table_t *table, FILE *stream)
         }
         if (table->students[i]->is_dormitory)
         {
-            get_dormitory_data(&table->students[i]->address, stream);
+            rc = get_dormitory_data(&table->students[i]->address, stream);
+            if (rc != 0)
+            {
+                return rc;
+            }
         }
         else
         {
-            get_home_address(&table->students[i]->address, stream);
+            rc = get_home_address(&table->students[i]->address, stream);
+            if (rc != 0)
+            {
+                return rc;
+            }
         }
 
         update_keys(table, i, i, table->students[i]->age);
