@@ -48,7 +48,7 @@ typedef struct student
 
 typedef struct keys
 {
-    int age;
+    short age;
     short id;
 } keys_t;
 
