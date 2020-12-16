@@ -36,6 +36,7 @@ int main()
                 rc = load_file(&table);
                 if (rc != 0)
                 {
+                    fprintf(stderr, "Error while loading file...\n");
                     return rc;
                 }
                 keys_sorted = false;
@@ -45,21 +46,29 @@ int main()
                 rc = append_student(&table);
                 if (rc != 0)
                 {
+                    fprintf(stderr, "Error while adding a new record... \n");
                     return rc;
                 }
                 keys_sorted = false;
                 table_sorted = false;
                 break;
             case 3:
+                if (!table.students[0] || !table.size)
+                {
+                    fprintf(stderr, "You tried to process an empty table.");
+                    return TABLE_IS_EMPTY;
+                }
                 rc = delete_students(&table);
                 if (rc != 0)
                 {
+                    fprintf(stderr, "Error while deleting records... \n");
                     return rc;
                 }
                 break;
             case 4:
                 if (!table.students[0] || !table.size)
                 {
+                    fprintf(stderr, "You tried to process an empty table.");
                     return TABLE_IS_EMPTY;
                 }
                 qsort(table.keys, table.size, sizeof(keys_t), comparator_keys);
@@ -69,6 +78,7 @@ int main()
             case 5:
                 if (!table.students[0] || !table.size)
                 {
+                    fprintf(stderr, "You tried to process an empty table.");
                     return TABLE_IS_EMPTY;
                 }
                 qsort(table.students, table.size, sizeof(table.students[0]), comparator_table);
@@ -78,6 +88,7 @@ int main()
             case 6:
                 if (!table.students[0] || !table.size)
                 {
+                    fprintf(stderr, "You tried to process an empty table.");
                     return TABLE_IS_EMPTY;
                 }
                 if (table_sorted)
@@ -85,6 +96,7 @@ int main()
                     rc = load_file(&table);
                     if (rc != 0)
                     {
+                        fprintf(stderr, "Error while loading file...\n");
                         return rc;
                     }
                     keys_sorted = false;
@@ -100,6 +112,7 @@ int main()
             case 7:
                 if (!table.students[0] || !table.size)
                 {
+                    fprintf(stderr, "You tried to process an empty table.");
                     return TABLE_IS_EMPTY;
                 }
                 qs_vs_bubble(&table);
@@ -107,17 +120,20 @@ int main()
             case 8:
                 if (!table.students[0] || !table.size)
                 {
+                    fprintf(stderr, "You tried to process an empty table.");
                     return TABLE_IS_EMPTY;
                 }
                 rc = specified_output(table);
                 if (rc != 0)
                 {
+                    fprintf(stderr, "Invalid year number was entered...\n");
                     return rc;
                 }
                 break;
             case 9:
                 if (!table.students[0] || !table.size)
                 {
+                    fprintf(stderr, "You tried to process an empty table.");
                     return TABLE_IS_EMPTY;
                 }
                 print_table(table, false);
