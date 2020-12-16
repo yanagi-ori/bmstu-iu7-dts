@@ -67,7 +67,6 @@ int main()
         printf("The number you have entered is not an integer one");
         return INTEGER_WRONG_FORMAT;
     }
-    simplify_int(&integer_n);
 
     //reading of the second number
     printf("\nEnter a float number:");
