@@ -221,7 +221,7 @@ short get_address_state(table_t *table, FILE *stream, int i)
     {
         printf("Enter the address status ([d]ormitory or [h]ome): ");
     }
-    if (fscanf(stream, "%s", buffer) != 1)
+    if (fscanf(stream, "%99s", buffer) != 1)
     {
         return IO_TABLE_DATA_READ_ERROR;
     }
