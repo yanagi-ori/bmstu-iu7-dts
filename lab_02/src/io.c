@@ -341,8 +341,8 @@ short load_file(table_t *table)
     {
         return rc;
     }
-    *table->students = malloc(sizeof(student_t *) * table->size);
-    table->keys = malloc(sizeof(keys_t) * table->size);
+    table->students = realloc(table->students, sizeof(student_t *) * table->size);
+    table->keys = realloc(table->keys, sizeof(keys_t) * table->size);
     rc = get_table_data(table, file);
     if (rc != 0)
     {
@@ -462,7 +462,6 @@ void print_sorts_vs_results(uint64_t total_ticks, short sort_type, short table_t
     printf("Sorting %s with %s.\n", table_type ? "table" : "keys array", sort_type ? "QuickSort" : "bubble sort");
     printf("%Ild ticks, %.10lf seconds\n", total_ticks, (double) total_ticks / GHZ);
 }
-
 
 short specified_output(table_t table)
 {

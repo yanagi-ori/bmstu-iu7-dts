@@ -44,7 +44,6 @@ void free_table(table_t *table)
     {
         free_student(table->students[i]);
     }
-    free(table->keys);
     table->size = 0;
 }
 

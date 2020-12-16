@@ -8,7 +8,6 @@
 #include <stdlib.h>
 #include "../inc/sort.h"
 #include "../inc/io.h"
-#include "../inc/table_utils.h"
 
 int comparator_keys(const void *val1, const void *val2)
 {
@@ -17,7 +16,7 @@ int comparator_keys(const void *val1, const void *val2)
 
 int comparator_table(const void *val1, const void *val2)
 {
-    return ((student_t *) (val1))->age - ((student_t *) (val2))->age;
+    return (*(student_t **) (val1))->age - (*(student_t **) (val2))->age;
 }
 
 uint64_t tick(void)

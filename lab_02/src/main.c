@@ -71,7 +71,7 @@ int main()
                 {
                     return TABLE_IS_EMPTY;
                 }
-                qsort(table.students, table.size, sizeof(student_t *), comparator_table);
+                qsort(table.students, table.size, sizeof(table.students[0]), comparator_table);
                 table_sorted = true;
                 print_table(table, false);
                 break;
@@ -126,6 +126,8 @@ int main()
                 if (table.students[0])
                 {
                     free_table(&table);
+                    free(table.students);
+                    free(table.keys);
                 }
                 return 0;
             default:
@@ -133,6 +135,7 @@ int main()
                 {
                     free_table(&table);
                     free(table.students);
+                    free(table.keys);
                 }
                 printf("Invalid menu number\n");
                 return INVALID_INPUT_DATA;
