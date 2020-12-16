@@ -106,7 +106,7 @@ int main()
 
     if (check_expon(float_raw, 0, strlen(float_raw)))
     {
-        code_error = to_exp(integer_raw);
+        code_error = to_exp(float_raw);
         if (code_error == -1)
         {
             printf("ERROR: exponential conversion error\n");
