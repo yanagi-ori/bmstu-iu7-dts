@@ -110,6 +110,7 @@ short get_student_data(table_t *table, FILE *stream, int i)
     }
     if (fscanf(stream, "%s", buffer) != 1)
     {
+        free(temp_student);
         return IO_TABLE_DATA_READ_ERROR;
     }
     temp_student->surname = strdup(buffer);
@@ -120,6 +121,8 @@ short get_student_data(table_t *table, FILE *stream, int i)
     }
     if (fscanf(stream, "%s", buffer) != 1)
     {
+        free(temp_student->surname);
+        free(temp_student);
         return IO_TABLE_DATA_READ_ERROR;
     }
     temp_student->name = strdup(buffer);
@@ -130,6 +133,9 @@ short get_student_data(table_t *table, FILE *stream, int i)
     }
     if (fscanf(stream, "%d", &temp) != 1)
     {
+        free(temp_student->surname);
+        free(temp_student->name);
+        free(temp_student);
         return IO_TABLE_DATA_READ_ERROR;
     }
     temp_student->group = (short) temp;
@@ -140,10 +146,16 @@ short get_student_data(table_t *table, FILE *stream, int i)
     }
     if (fscanf(stream, "%s", buffer) != 1)
     {
+        free(temp_student->surname);
+        free(temp_student->name);
+        free(temp_student);
         return IO_TABLE_DATA_READ_ERROR;
     }
     if (strlen(buffer) != 1 || (buffer[0] != 'm' && buffer[0] != 'f'))
     {
+        free(temp_student->surname);
+        free(temp_student->name);
+        free(temp_student);
         return IO_TABLE_DATA_READ_ERROR;
     }
     if (buffer[0] == 'f')
@@ -161,10 +173,16 @@ short get_student_data(table_t *table, FILE *stream, int i)
     }
     if (fscanf(stream, "%d", &temp) != 1)
     {
+        free(temp_student->surname);
+        free(temp_student->name);
+        free(temp_student);
         return IO_TABLE_DATA_READ_ERROR;
     }
     if (temp <= 0)
     {
+        free(temp_student->surname);
+        free(temp_student->name);
+        free(temp_student);
         return IO_TABLE_DATA_READ_ERROR;
     }
     temp_student->age = (short) temp;
@@ -176,10 +194,16 @@ short get_student_data(table_t *table, FILE *stream, int i)
     }
     if (fscanf(stream, "%lf", &temp_score) != 1)
     {
+        free(temp_student->surname);
+        free(temp_student->name);
+        free(temp_student);
         return IO_TABLE_DATA_READ_ERROR;
     }
     if (temp_score <= 0)
     {
+        free(temp_student->surname);
+        free(temp_student->name);
+        free(temp_student);
         return IO_TABLE_DATA_READ_ERROR;
     }
     temp_student->average_score = temp_score;
