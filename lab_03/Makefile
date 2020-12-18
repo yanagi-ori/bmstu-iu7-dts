@@ -1,5 +1,5 @@
 CFLAGS := -Wall -Werror -std=gnu99 -Wvla -Wfloat-equal -Wfloat-conversion -pedantic -lm -lrt
-OBJS := ./out/io.o
+OBJS := ./out/io.o ./out/matrix_utils.o ./out/memory_manager.o
 UTOBJS := ./out/check_io.o ./out/check_sc.o ./out/check_utils.o
 CC := gcc
 LINKER := -o
@@ -20,12 +20,18 @@ endif
 app.exe: ./out/main.o $(OBJS)
 	$(CC) $^ $(LINKER) $@
 
-unit_tests.exe: ./out/unit_test.o $(OBJS) $(UTOBJS)
-	$(CC) $^ -lcheck $(LINKER) $@
-
 ./out/main.o: ./src/main.c ./inc/*.h
 	mkdir -p out
 	$(CC) $(CFLAGS) -c $< -o $@
 
-./out/io.o : ./src/io.c ./inc/*.h
+./out/io.o: ./src/io.c ./inc/*.h
 	$(CC) $(CFLAGS) -c $< -o $@
+
+./out/matrix_utils.o: ./src/matrix_utils.c ./inc/*.h
+	$(CC) $(CFLAGS) -c $< -o $@
+
+./out/memory_manager.o: ./src/memory_manager.c ./inc/*.h
+	$(CC) $(CFLAGS) -c $< -o $@
+
+clean:
+	rm *.exe ./out/*.o

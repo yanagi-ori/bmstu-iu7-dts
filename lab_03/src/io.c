@@ -9,7 +9,7 @@
 #include "../inc/io.h"
 #include "../inc/errors.h"
 
-#define MAX_LONG 2147483646
+#define MAX_INT 2147483646
 
 short get_input_mode(bool *manual_input)
 {
@@ -39,10 +39,10 @@ short get_input_mode(bool *manual_input)
 
 short get_matrix_sizes(sparse_matrix_t *matrix, sparse_matrix_t *vector)
 {
-    printf("Enter amount of columns and columns in the matrix (2 - 10.000): ");
+    printf("Enter amount of columns and columns in the matrix (2 - 10.000): \n");
     if (scanf("%d%d", &matrix->rows, &matrix->columns) != 2)
     {
-        IO_ERROR_INPUT_FROM_KEYBOARD;
+        return IO_ERROR_INPUT_FROM_KEYBOARD;
     }
     if (matrix->rows < 2 || matrix->rows > 10000)
     {
@@ -53,13 +53,13 @@ short get_matrix_sizes(sparse_matrix_t *matrix, sparse_matrix_t *vector)
         return IO_INVALID_COLUMNS_NUMBER;
     }
 
-    long cur_size;
-    printf("Enter a number of nonzero elements in the matrix: ");
+    int cur_size;
+    printf("Enter a number of nonzero elements in the matrix: \n");
     if (scanf("%10d", &cur_size) != 1)
     {
         return IO_ERROR_INPUT_FROM_KEYBOARD;
     }
-    if (cur_size < MAX_LONG)
+    if (cur_size > MAX_INT)
     {
         return IO_ELEMENTS_LIMIT;
     }
@@ -71,15 +71,16 @@ short get_matrix_sizes(sparse_matrix_t *matrix, sparse_matrix_t *vector)
     }
     matrix->curr_size = cur_size;
 
-    printf("Enter a number of elements in the row vector: ");
-    if (scanf("%d", &vector->curr_size) != 1)
+    printf("Enter a number of elements in the row vector: \n");
+    if (scanf("%10d", &cur_size) != 1)
     {
         return IO_ERROR_INPUT_FROM_KEYBOARD;
     }
-    if (vector->curr_size < 1 || vector->curr_size > matrix->rows)
+    if (cur_size < 1 || cur_size > matrix->rows)
     {
         return IO_ELEMENTS_LIMIT;
     }
+    vector->curr_size = cur_size;
 
     return 0;
 }

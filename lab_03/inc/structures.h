@@ -32,8 +32,8 @@ typedef struct sparse_matrix
 typedef struct std_matrix
 {
     int **matrix;
-    int xsize;
-    int ysize;
+    int rows;
+    int columns;
 } std_matrix_t;
 
 #endif //LAB_03_STRUCTURES_H
