@@ -6,6 +6,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include "../inc/io.h"
 #include "../inc/errors.h"
 #include "../inc/matrix_utils.h"
@@ -167,6 +168,8 @@ short matrix_filling(matrix_t *matrix, sparse_matrix_t *sparse_matrix, const boo
         {
             rc = matrix_manual_input(matrix, sparse_matrix->curr_size);
             transpose(matrix);
+            sparse_matrix->rows = matrix->rows;
+            sparse_matrix->columns = matrix->columns;
         }
 
         if (rc != 0)
@@ -182,4 +185,89 @@ short matrix_filling(matrix_t *matrix, sparse_matrix_t *sparse_matrix, const boo
     convert_matrix(matrix, sparse_matrix);
 
     return 0;
+}
+
+short source_output(matrix_t matrix, matrix_t vector, int width, int height)
+{
+    if (matrix.columns > width || matrix.rows > height)
+    {
+        return IO_OUTPUT;
+    }
+    printf("################################################################################\n");
+    printf("\n\nVector\n");
+    for (int i = 0; i < vector.columns; i++)
+    {
+        printf("%4d ", vector.matrix[0][i]);
+    }
+
+    printf("\n\nMatrix\n");
+    for (int i = 0; i < matrix.rows; i++)
+    {
+        for (int j = 0; j < matrix.columns; j++)
+        {
+            printf("%4d ", matrix.matrix[i][j]);
+        }
+        printf("\n");
+    }
+
+    printf("\n\n");
+    return 0;
+}
+
+short standard_matrix_result_output(matrix_t matrix, int width)
+{
+    if (matrix.columns > width)
+    {
+        return IO_OUTPUT;
+    }
+
+    puts("Result of multiplication by usual way: ");
+    for (int i = 0; i < matrix.columns; i++)
+    {
+        printf("%d ", matrix.matrix[0][i]);
+    }
+    return 0;
+}
+
+short sparse_matrix_result_output(sparse_matrix_t matrix, int width)
+{
+    if (matrix.curr_size == 0)
+    {
+        return SPARSE_MATRIX_IS_EMPTY;
+    }
+
+    if (matrix.curr_size > width)
+    {
+        return IO_OUTPUT;
+    }
+
+    puts("\n\nSparse vector A:");
+
+    for (int i = 0; i < matrix.curr_size; i++)
+    {
+        printf("%4d ", matrix.A[i]);
+    }
+
+    puts("\n\nArray of column indices JA: ");
+
+    for (int i = 0; i < matrix.curr_size; i++)
+    {
+        printf("%4d ", matrix.JA[i]);
+    }
+    return 0;
+}
+
+void compare_results(matrix_t std_matrix, sparse_matrix_t sparse_matrix,
+                     int64_t std_start, int64_t std_end, int64_t sparse_end, int curr_size)
+{
+    double one_percent = (double) (std_matrix.rows) * std_matrix.columns / 100;
+    double amount = sparse_matrix.curr_size / one_percent;
+
+    printf("\n\nMatrix %d x %d. Fullness (approximate): %.1lf%% / 100%%\n",
+           std_matrix.rows, std_matrix.columns, amount);
+    printf("\nNormal multiplication time: %Ild ticks\nSparse matrix multiplication time: %Ild ticks\n",
+           std_end - std_start, sparse_end - std_end);
+    printf("\nMemory footprint:\nRegular matrix (one):% lu\nSparse matrix (one):% lu\n",
+           sizeof(int) * std_matrix.rows * std_matrix.columns,
+           2 * sizeof(int) * curr_size + sizeof(node_t) * std_matrix.columns);
 }

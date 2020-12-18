@@ -1,11 +1,16 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include "../inc/structures.h"
 #include "../inc/errors.h"
 #include "../inc/io.h"
 #include "../inc/matrix_utils.h"
 #include "../inc/memory_manager.h"
+#include "../inc/benchmark.h"
+#include "../inc/matrix_operations.h"
+
+#define WIDTH 80
 
 int main()
 {
@@ -156,6 +161,38 @@ int main()
         return IO_INVALID_COLUMNS_NUMBER;
     }
 
+    uint64_t start = tick();
+    multiplication(&std_matrix, &std_vector, &std_result);
+    int64_t std_end = tick();
+    sparce_multiplication(&sparse_matrix, &std_vector, &sparse_result);
+    int64_t end = tick();
+
+    transpose(&std_matrix);
+    rc = source_output(std_matrix, std_vector, 40, 40);
+    if (rc == IO_OUTPUT)
+    {
+        printf("The source matrices are too big to be show.\n");
+    }
+
+    rc = standard_matrix_result_output(std_result, WIDTH);
+    if (rc == IO_OUTPUT)
+    {
+        printf("The result of calculations of a regular matrix will not be displayed on the screen, "
+               "since it contains more than %d elements.\n", WIDTH);
+    }
+
+    rc = sparse_matrix_result_output(sparse_result, WIDTH);
+    if (rc == IO_OUTPUT)
+    {
+        printf("The result of calculations of a regular matrix will not be displayed on the screen, "
+               "since it contains more than %d elements.\n", WIDTH);
+    }
+    if (rc == SPARSE_MATRIX_IS_EMPTY)
+    {
+        printf("\nThe result sparse matrix is empty\n");
+    }
+
+    compare_results(std_result, sparse_result, start, std_end, end, sparse_matrix.curr_size);
 
     return 0;
 }
