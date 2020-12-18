@@ -35,23 +35,6 @@ uint64_t tick(void)
     return ticks;
 }
 
-static void swap(bool table, void *val1, void *val2)
-{
-    if (table)
-    {
-        student_t *temp = *(student_t **) val1;
-        *(student_t **) val1 = *(student_t **) (val2);
-        *(student_t **) val2 = temp;
-    }
-    else
-    {
-        keys_t temp = *(keys_t *) val1;
-        *(keys_t *) val1 = *(keys_t *) (val2);
-        *(keys_t *) val2 = temp;
-    }
-}
-
-
 void bubble_sort_table(student_t **students_array, int len)
 {
     for (int i = 1; i < len; i++)

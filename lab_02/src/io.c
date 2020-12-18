@@ -373,7 +373,16 @@ short load_file(table_t *table)
     {
         return rc;
     }
+    if (table->students == NULL)
+    {
+        table->students = malloc(sizeof(student_t *) * table->size);
+    }
     table->students = realloc(table->students, sizeof(student_t *) * table->size);
+
+    if (table->keys == NULL)
+    {
+        table->keys = malloc(sizeof(keys_t) * table->size);
+    }
     table->keys = realloc(table->keys, sizeof(keys_t) * table->size);
     rc = get_table_data(table, file);
     if (rc != 0)
@@ -430,11 +439,9 @@ short delete_students(table_t *table)
     {
         return IO_ERROR;
     }
-    student_t **array = table->students;
-    int j = 0;
-    for (int i = 0; i < table->size; i++)
+    for (int j = 0; j < table->size;)
     {
-        if (array[j]->age == age)
+        if (table->students[j]->age == age)
         {
             remove_item(table, j);
         }
@@ -466,13 +473,13 @@ void print_table(const table_t table, bool keys)
 
         if (table.students[i]->is_dormitory)
         {
-            printf("| Dormitory number: %5d | Room number: %d\n",
+            printf("| Dormitory number: %5d | Room number: %d |\n",
                    table.students[i]->address.dormitory.dormitory_num,
                    table.students[i]->address.dormitory.room_num);
         }
         else
         {
-            printf("| Street: %15s | House: %d\t| Apartment: %d\n",
+            printf("| Street: %15s | House: %3d\t| Apartment: %d\n",
                    table.students[i]->address.house.street,
                    table.students[i]->address.house.house_num,
                    table.students[i]->address.house.apartment_num);

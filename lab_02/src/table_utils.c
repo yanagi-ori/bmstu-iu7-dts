@@ -63,11 +63,9 @@ void swap_keys(keys_t *key_a, keys_t *key_b)
 
 short remove_item(table_t *table, int i)
 {
-    student_t **students_array = table->students;
-
     for (int j = i + 1; j < table->size + 1; j++)
     {
-        swap_students(&students_array[j - 1], &students_array[j]);
+        swap_students(&table->students[j - 1], &table->students[j]);
         swap_keys(&table->keys[j - 1], &table->keys[j]);
     }
     table->size--;
@@ -80,4 +78,3 @@ void update_keys(table_t *table, const short index, const short id, const short 
     table->keys[index].id = id;
     table->keys[index].age = age;
 }
-
