@@ -516,7 +516,7 @@ short specified_output(table_t table)
     }
     for (int i = 0; i < table.size; i++)
     {
-        if (table.students[i]->date.year == year)
+        if (table.students[i]->date.year == year && table.students[i]->is_dormitory == true)
         {
             printf("Surname: %10s | Name: %s\t| Group: %5hi | Sex: %6s | Age: %2d | Average score: %lf | "
                    "Admission date: %2d %2d %4d | Address: %9s ",
