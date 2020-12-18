@@ -7,7 +7,7 @@
 #include "../inc/errors.h"
 #include "../inc/memory_manager.h"
 
-short create_matrix(std_matrix_t *matrix, const int rows, const int columns)
+short create_matrix(matrix_t *matrix, const int rows, const int columns)
 {
     matrix->matrix = malloc(rows * sizeof(int *));
 
@@ -16,7 +16,7 @@ short create_matrix(std_matrix_t *matrix, const int rows, const int columns)
         return MEMORY_ALLOCATION_ERROR;
     }
 
-    int *data = malloc(rows * columns * sizeof(int));
+    int *data = calloc(rows * columns, sizeof(int));
     if (!data)
     {
         free(matrix->matrix);

@@ -5,7 +5,7 @@
 #ifndef LAB_03_MEMORY_MANAGER_H
 #define LAB_03_MEMORY_MANAGER_H
 
-short create_matrix(std_matrix_t *matrix, const int rows, const int columns);
+short create_matrix(matrix_t *matrix, const int rows, const int columns);
 
 void free_matrix(int **matrix);
 

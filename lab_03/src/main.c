@@ -57,7 +57,7 @@ int main()
     init_vector(&sparse_result, sparse_matrix.columns);
 
     // standard matrix initialization
-    std_matrix_t std_matrix, std_vector, std_result;
+    matrix_t std_matrix, std_vector, std_result;
 
     rc = create_matrix(&std_matrix, sparse_matrix.rows, sparse_matrix.columns);
     if (rc == MEMORY_ALLOCATION_ERROR)
@@ -133,6 +133,27 @@ int main()
         free_matrix(std_result.matrix);
         fprintf(stderr, "Memory allocation error.\n");
         return MEMORY_ALLOCATION_ERROR;
+    }
+
+    rc = matrix_filling(&std_matrix, &sparse_matrix, manual_input);
+    if (rc == 0)
+    {
+        rc = matrix_filling(&std_vector, &sparse_vector, manual_input);
+    }
+    if (rc == IO_ERROR_INPUT_FROM_KEYBOARD)
+    {
+        fprintf(stderr, "Incorrect input format.\n");
+        return IO_ERROR_INPUT_FROM_KEYBOARD;
+    }
+    if (rc == IO_INVALID_ROWS_NUMBER)
+    {
+        fprintf(stderr, "Incorrect rows number.\n");
+        return IO_INVALID_ROWS_NUMBER;
+    }
+    if (rc == IO_INVALID_COLUMNS_NUMBER)
+    {
+        fprintf(stderr, "Incorrect columns number.\n");
+        return IO_INVALID_COLUMNS_NUMBER;
     }
 
 

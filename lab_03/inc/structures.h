@@ -29,11 +29,11 @@ typedef struct sparse_matrix
     linked_list_t IA;
 } sparse_matrix_t;
 
-typedef struct std_matrix
+typedef struct matrix
 {
     int **matrix;
     int rows;
     int columns;
-} std_matrix_t;
+} matrix_t;
 
 #endif //LAB_03_STRUCTURES_H

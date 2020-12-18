@@ -8,6 +8,8 @@
 #include <stdlib.h>
 #include "../inc/io.h"
 #include "../inc/errors.h"
+#include "../inc/matrix_utils.h"
+#include "../inc/matrix_operations.h"
 
 #define MAX_INT 2147483646
 
@@ -81,6 +83,103 @@ short get_matrix_sizes(sparse_matrix_t *matrix, sparse_matrix_t *vector)
         return IO_ELEMENTS_LIMIT;
     }
     vector->curr_size = cur_size;
+
+    return 0;
+}
+
+
+short matrix_manual_input(matrix_t *matrix, const int size)
+{
+    for (int i = 0; i < size; i++)
+    {
+        int numb, row, column;
+
+        printf("Enter a nonzero item of matrix: \n");
+        if (scanf("%d", &numb) != 1)
+        {
+            return IO_ERROR_INPUT_FROM_KEYBOARD;
+        }
+
+        printf("Enter the number of row and column of this item (starting from 1): \n");
+        if (scanf("%d%d", &row, &column) != 2)
+        {
+            return IO_ERROR_INPUT_FROM_KEYBOARD;
+        }
+
+        if (row < 0 || row >= matrix->rows)
+        {
+            fprintf(stderr, "Номер строки превышает максимальный номер строки в матрице.\n");
+            return IO_INVALID_ROWS_NUMBER;
+        }
+
+        if (column < 0 || column >= matrix->columns)
+        {
+            fprintf(stderr, "Номер столбца превышает максимальный номер столбца в матрице.\n");
+            return IO_INVALID_COLUMNS_NUMBER;
+        }
+
+        matrix->matrix[row - 1][column - 1] = numb;
+    }
+
+    return 0;
+}
+
+short vector_manual_filling(matrix_t *matrix, const int size)
+{
+    int numb, column;
+
+    for (int i = 0; i < size; i++)
+    {
+        printf("Enter a nonzero item of row vector: \n");
+        if (scanf("%d", &numb) != 1)
+        {
+            return IO_ERROR_INPUT_FROM_KEYBOARD;
+        }
+
+        printf("Enter the number of the item's row (starting from 1): \n");
+        if (scanf("%d", &column) != 1)
+        {
+            return IO_ERROR_INPUT_FROM_KEYBOARD;
+        }
+
+        if (column < 0 || column >= matrix->columns)
+        {
+            return IO_INVALID_COLUMNS_NUMBER;
+        }
+
+        matrix->matrix[0][column] = numb;
+    }
+
+    return 0;
+}
+
+
+short matrix_filling(matrix_t *matrix, sparse_matrix_t *sparse_matrix, const bool manual_input)
+{
+    short rc;
+    if (manual_input == true)
+    {
+        if (sparse_matrix->rows == 1)
+        {
+            rc = vector_manual_filling(matrix, sparse_matrix->curr_size);
+        }
+        else
+        {
+            rc = matrix_manual_input(matrix, sparse_matrix->curr_size);
+            transpose(matrix);
+        }
+
+        if (rc != 0)
+        {
+            return rc;
+        }
+    }
+    else
+    {
+        random_filling(matrix, sparse_matrix->curr_size);
+    }
+
+    convert_matrix(matrix, sparse_matrix);
 
     return 0;
 }

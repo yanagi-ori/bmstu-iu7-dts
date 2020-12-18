@@ -9,4 +9,6 @@ short get_input_mode(bool *manual_input);
 
 short get_matrix_sizes(sparse_matrix_t *matrix, sparse_matrix_t *vector);
 
+short matrix_filling(matrix_t *matrix, sparse_matrix_t *sparse_matrix, bool manual_input);
+
 #endif //LAB_03_IO_H
