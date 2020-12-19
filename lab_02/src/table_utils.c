@@ -78,3 +78,11 @@ void update_keys(table_t *table, const short index, const short id, const short 
     table->keys[index].id = id;
     table->keys[index].age = age;
 }
+
+void update_all_keys(table_t *table)
+{
+    for (short i = 0; i < table->size; i++)
+    {
+        update_keys(table, i, i, table->students[i]->age);
+    }
+}

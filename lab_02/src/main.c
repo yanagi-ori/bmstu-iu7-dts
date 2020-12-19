@@ -12,8 +12,6 @@ int main()
     table_t table;
 
     short int action, rc;
-    bool keys_sorted = false;
-    bool table_sorted = false;
 
     rc = table_init(&table);
     if (rc == MEMORY_ALLOCATION_ERROR)
@@ -39,8 +37,6 @@ int main()
                     fprintf(stderr, "Error while loading file...\n");
                     return rc;
                 }
-                keys_sorted = false;
-                table_sorted = false;
                 break;
             case 2:
                 rc = append_student(&table);
@@ -55,8 +51,6 @@ int main()
                     fprintf(stderr, "Error while adding a new record... \n");
                     return rc;
                 }
-                keys_sorted = false;
-                table_sorted = false;
                 break;
             case 3:
                 if (!table.students[0] || !table.size)
@@ -96,7 +90,6 @@ int main()
                     return TABLE_IS_EMPTY;
                 }
                 qsort(table.keys, table.size, sizeof(keys_t), comparator_keys);
-                keys_sorted = true;
                 print_table_keys(table);
                 break;
             case 5:
@@ -112,7 +105,7 @@ int main()
                     return TABLE_IS_EMPTY;
                 }
                 qsort(table.students, table.size, sizeof(table.students[0]), comparator_table);
-                table_sorted = true;
+                update_all_keys(&table);
                 print_table(table, false);
                 break;
             case 6:
@@ -127,28 +120,28 @@ int main()
                     fprintf(stderr, "You tried to process an empty table.");
                     return TABLE_IS_EMPTY;
                 }
-                if (table_sorted)
-                {
-                    rc = load_file(&table);
-                    if (rc != 0)
-                    {
-                        if (table.students[0])
-                        {
-                            free_table(&table);
-                            free(table.students);
-                            free(table.keys);
-                        }
-                        fprintf(stderr, "Error while loading file...\n");
-                        return rc;
-                    }
-                    keys_sorted = false;
-                    table_sorted = false;
-                }
-                if (!keys_sorted)
-                {
-                    qsort(table.students, table.size, sizeof(student_t *), comparator_table);
-                    keys_sorted = true;
-                }
+//                if (table_sorted)
+//                {
+//                    rc = load_file(&table);
+//                    if (rc != 0)
+//                    {
+//                        if (table.students[0])
+//                        {
+//                            free_table(&table);
+//                            free(table.students);
+//                            free(table.keys);
+//                        }
+//                        fprintf(stderr, "Error while loading file...\n");
+//                        return rc;
+//                    }
+//                    keys_sorted = false;
+//                    table_sorted = false;
+//                }
+//                if (!keys_sorted)
+//                {
+                //qsort(table.students, table.size, sizeof(student_t *), comparator_table);
+                //keys_sorted = true;
+                //}
                 print_table(table, true);
                 break;
             case 7:
@@ -164,6 +157,7 @@ int main()
                     return TABLE_IS_EMPTY;
                 }
                 qs_vs_bubble(&table);
+                update_all_keys(&table);
                 break;
             case 8:
                 if (!table.students[0] || !table.size)

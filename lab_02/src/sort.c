@@ -73,17 +73,19 @@ short qs_vs_bubble(table_t *const table)
 
     printf("\nSorting table of %d keys\n", table->size);
 
+    load_file(table);
+
     start = tick();
     qsort(table->students, table->size, sizeof(student_t *), comparator_table);
     end = tick();
     print_sorts_vs_results(end - start, 1, 1);
 
+    load_file(table);
+
     start1 = tick();
     qsort(table->keys, table->size, sizeof(keys_t), comparator_keys);
     end1 = tick();
     print_sorts_vs_results(end1 - start1, 1, 0);
-
-    load_file(table);
 
     start2 = tick();
     bubble_sort_table(table->students, table->size);

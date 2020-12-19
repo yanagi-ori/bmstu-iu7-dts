@@ -15,4 +15,6 @@ void free_table(table_t *table);
 
 void swap_students(student_t **student_a, student_t **student_b);
 
+void update_all_keys(table_t *table);
+
 #endif //LAB_02_TABLE_UTILS_H
