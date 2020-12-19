@@ -84,7 +84,7 @@ void sparce_multiplication(sparse_matrix_t *matrix, matrix_t *vector, sparse_mat
         temp_next_node = temp_node->next_element_ptr;
         curr_sum = 0;
 
-        for (int j = temp_node->start_column_ind; j < temp_next_node->start_column_ind; j++)
+        for (int j = temp_node->start_row_ind; j < temp_next_node->start_row_ind; j++)
         {
             curr_sum += matrix->A[j] * vector->matrix[0][matrix->JA[j]];
         }
@@ -98,7 +98,7 @@ void sparce_multiplication(sparse_matrix_t *matrix, matrix_t *vector, sparse_mat
     }
 
     curr_sum = 0;
-    for (int i = temp_node->start_column_ind; i < matrix->curr_size; i++)
+    for (int i = temp_node->start_row_ind; i < matrix->curr_size; i++)
     {
         curr_sum += matrix->A[i] * vector->matrix[0][matrix->JA[i]];
     }

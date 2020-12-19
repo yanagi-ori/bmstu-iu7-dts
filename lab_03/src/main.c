@@ -192,7 +192,7 @@ int main()
         printf("\nThe result sparse matrix is empty\n");
     }
 
-    compare_results(std_result, sparse_result, start, std_end, end, sparse_matrix.curr_size);
+    compare_results(std_matrix, sparse_matrix, start, std_end, end, sparse_matrix.curr_size);
 
     return 0;
 }

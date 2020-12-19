@@ -8,7 +8,7 @@
 // linked_list structures
 typedef struct node
 {
-    int start_column_ind;
+    int start_row_ind;
     struct node *next_element_ptr;
 } node_t;
 

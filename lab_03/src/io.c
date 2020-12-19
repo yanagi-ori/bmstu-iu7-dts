@@ -101,7 +101,7 @@ short matrix_manual_input(matrix_t *matrix, const int size)
             return IO_ERROR_INPUT_FROM_KEYBOARD;
         }
 
-        printf("Enter the number of row and column of this item (starting from 1): \n");
+        printf("Enter the number of row and column of this item (starting from 0): \n");
         if (scanf("%d%d", &row, &column) != 2)
         {
             return IO_ERROR_INPUT_FROM_KEYBOARD;
@@ -109,17 +109,15 @@ short matrix_manual_input(matrix_t *matrix, const int size)
 
         if (row < 0 || row >= matrix->rows)
         {
-            fprintf(stderr, "Номер строки превышает максимальный номер строки в матрице.\n");
             return IO_INVALID_ROWS_NUMBER;
         }
 
         if (column < 0 || column >= matrix->columns)
         {
-            fprintf(stderr, "Номер столбца превышает максимальный номер столбца в матрице.\n");
             return IO_INVALID_COLUMNS_NUMBER;
         }
 
-        matrix->matrix[row - 1][column - 1] = numb;
+        matrix->matrix[row][column] = numb;
     }
 
     return 0;
@@ -137,7 +135,7 @@ short vector_manual_filling(matrix_t *matrix, const int size)
             return IO_ERROR_INPUT_FROM_KEYBOARD;
         }
 
-        printf("Enter the number of the item's row (starting from 1): \n");
+        printf("Enter the number of the item's row (starting from 0): \n");
         if (scanf("%d", &column) != 1)
         {
             return IO_ERROR_INPUT_FROM_KEYBOARD;

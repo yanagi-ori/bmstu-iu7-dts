@@ -80,7 +80,7 @@ short create_liked_list(int size, linked_list_t *list)
         }
 
         curr_element->next_element_ptr = list->head;
-        curr_element->start_column_ind = -1;
+        curr_element->start_row_ind = -1;
         list->head = curr_element;
     }
 

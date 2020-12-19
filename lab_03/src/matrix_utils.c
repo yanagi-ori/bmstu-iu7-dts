@@ -67,7 +67,7 @@ void convert_matrix(matrix_t *matrix, sparse_matrix_t *sparse_matrix)
         if (sparse_matrix->IA.head != NULL)
         {
             node_t *temp_node = get_by_pos(&sparse_matrix->IA, i);
-            temp_node->start_column_ind = sparse_index;
+            temp_node->start_row_ind = sparse_index;
             change_by_pos(temp_node, &sparse_matrix->IA, i);
         }
 
