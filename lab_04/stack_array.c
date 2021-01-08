@@ -46,13 +46,13 @@ int resize_arr(stack_t *stack, size_t size)
 }
 
 
-void push_arr(stack_t *stack, const int *value)
+void push_arr(stack_t *stack, int value)
 {
     if (stack->top >= stack->size)
     {
         resize_arr(stack, sizeof(int));
     }
-    stack->data[stack->top] = *value;
+    stack->data[stack->top] = value;
     stack->top++;
 }
 

@@ -40,7 +40,7 @@ int array_stack_process()
                     {
                         return IO_ELEMENT;
                     }
-                    push_arr(stack, &element);
+                    push_arr(stack, element);
                     break;
                 case 2:
                     pop_arr(stack, &element);

@@ -23,7 +23,7 @@ void delete_arr_stack(stack_t **stack);
 
 int resize_arr(stack_t *stack, size_t size);
 
-void push_arr(stack_t *stack, const int *value);
+void push_arr(stack_t *stack, int value);
 
 void pop_arr(stack_t *stack, int *element);
 
