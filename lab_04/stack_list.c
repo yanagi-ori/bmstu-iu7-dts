@@ -3,18 +3,20 @@
 //
 
 
+#include <stdio.h>
 #include "stack_list.h"
 
-void push_list(list_stack_t **head, int value)
+int push_list(list_stack_t **head, int value)
 {
     list_stack_t *tmp = malloc(sizeof(list_stack_t));
     if (tmp == NULL)
     {
-        exit(STACK_OVERFLOW);
+        return STACK_OVERFLOW;
     }
     tmp->next = *head;
     tmp->value = value;
     *head = tmp;
+    return 0;
 }
 
 
