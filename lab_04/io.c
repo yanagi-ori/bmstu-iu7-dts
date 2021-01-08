@@ -43,8 +43,11 @@ int array_stack_process()
                     push_arr(stack, element);
                     break;
                 case 2:
-                    pop_arr(stack, &element);
-                    printf("0x%x", element);
+                    rc = pop_arr(stack, &element);
+                    if (rc != 0){
+                        return rc;
+                    }
+                    printf("0x%x\n", element);
                     break;
                 case 3:
                     current_state_arr(stack);
@@ -68,6 +71,46 @@ int array_stack_process()
 
 int list_stack_process()
 {
+    list_stack_t *stack = NULL;
+    list_stack_t *node;
+    freed_addresses_t *head = NULL;
+    int element = 0;
+    int tmp = -1;
+    while (tmp != 0)
+    {
+        print_menu();
+        int rc = scanf("%d", &tmp);
+        if (rc == 1)
+        {
+            switch (tmp)
+            {
+                case 1:
+                    printf("Enter the memory address: \n");
+                    rc = scanf("%x", &element);
+                    if (rc != 1)
+                    {
+                        return IO_ELEMENT;
+                    }
+                    rc = push_list(&stack, element);
+                    if (rc != 0){
+                        return rc;
+                    }
+                    break;
+                case 2:
+                    node = pop_list(&stack);
+                    printf("0x%x\n", node->value);
+
+                    free(node);
+                    break;
+                case 3:
+                    break;
+                case 0:
+                    break;
+                default:
+                    return IO_MENU_ITEM;
+            }
+        }
+    }
 
     return 0;
 }

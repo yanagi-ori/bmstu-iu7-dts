@@ -46,25 +46,30 @@ int resize_arr(stack_t *stack, size_t size)
 }
 
 
-void push_arr(stack_t *stack, int value)
+int push_arr(stack_t *stack, int value)
 {
     if (stack->top >= stack->size)
     {
-        resize_arr(stack, sizeof(int));
+        if (resize_arr(stack, sizeof(int)) != 0)
+        {
+            return MEMORY_ALLOCATION_ERROR;
+        }
     }
     stack->data[stack->top] = value;
     stack->top++;
+    return 0;
 }
 
-void pop_arr(stack_t *stack, int *element)
+int pop_arr(stack_t *stack, int *element)
 {
     if (stack->top == 0)
     {
-        exit(STACK_UNDERFLOW);
+        return (STACK_UNDERFLOW);
     }
     stack->top--;
     int tmp = stack->data[stack->top];
     *element = tmp;
+    return 0;
 }
 
 int current_state_arr(stack_t *stack)
