@@ -5,7 +5,7 @@
 int main()
 {
     {
-        printf("Types & Data Structures. Lab 4\n\nMenu:");
+        printf("Types & Data Structures. Lab 4\n\nMenu:\n");
         printf("1. Array stack_array\n");
         printf("2. Linked List stack_array\n");
     }
@@ -33,6 +33,5 @@ int main()
         }
     }
 
-    printf("Hello, World!\n");
     return 0;
 }

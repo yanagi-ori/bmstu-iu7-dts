@@ -8,7 +8,7 @@
 
 void print_menu()
 {
-    printf("1. Push new element;\n");
+    printf("\n1. Push new element;\n");
     printf("2. Pop element\n");
     printf("3. Current state of the stack\n");
     printf("0. Stop program\n");
@@ -16,17 +16,18 @@ void print_menu()
 
 int array_stack_process()
 {
-    stack_t *stack = create_array_stack(sizeof(char) * 17);
+    stack_t *stack = create_arr_stack(sizeof(int));
     if (stack == NULL)
     {
         return MEMORY_ALLOCATION_ERROR;
     }
     printf("Stack was successfully created.\n");
 
-    char element[17];
+    int element = 0;
     int tmp = -1;
     while (tmp != 0)
     {
+        print_menu();
         int rc = scanf("%d", &tmp);
         if (rc == 1)
         {
@@ -34,22 +35,25 @@ int array_stack_process()
             {
                 case 1:
                     printf("Enter the memory address: \n");
-                    rc = scanf("%16s", element);
+                    rc = scanf("%x", &element);
                     if (rc != 1)
                     {
                         return IO_ELEMENT;
                     }
-                    push_array(stack, element);
+                    push_arr(stack, &element);
+                    break;
                 case 2:
-                    pop_array(stack, element);
-                    printf("%s", element);
+                    pop_arr(stack, &element);
+                    printf("0x%x", element);
+                    break;
                 case 3:
-                    //todo: current state
+                    current_state_arr(stack);
+                    break;
                 case 0:
-                    delete_array_stack(&stack);
+                    delete_arr_stack(&stack);
                     break;
                 default:
-                    delete_array_stack(&stack);
+                    delete_arr_stack(&stack);
                     return IO_MENU_ITEM;
             }
         }

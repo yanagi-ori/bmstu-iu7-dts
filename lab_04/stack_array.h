@@ -12,19 +12,21 @@
 
 typedef struct stack_array
 {
-    void *data;
+    int *data;
     size_t size;
     size_t top;
 } stack_t;
 
-stack_t *create_array_stack(size_t size);
+stack_t *create_arr_stack(size_t size);
 
-void delete_array_stack(stack_t **stack);
+void delete_arr_stack(stack_t **stack);
 
-int resize_array(stack_t *stack, size_t size);
+int resize_arr(stack_t *stack, size_t size);
 
-void push_array(stack_t *stack, char *value);
+void push_arr(stack_t *stack, const int *value);
 
-void pop_array(stack_t *stack, char *element);
+void pop_arr(stack_t *stack, int *element);
+
+int current_state_arr(stack_t *stack);
 
 #endif //LAB_04_STACK_ARRAY_H
