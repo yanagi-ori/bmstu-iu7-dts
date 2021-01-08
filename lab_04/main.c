@@ -17,7 +17,7 @@ int main()
         switch (tmp)
         {
             case 1:
-                rc = array_stack_process();
+                rc = array_stack_process(); //todo: done, check?
                 break;
             case 2:
                 rc = list_stack_process();
@@ -28,8 +28,8 @@ int main()
         }
         if (rc != 0)
         {
-            //todo: specify error
-            return -1;
+            printf("Entered number in incorrect format\n");
+            return IO_ELEMENT;
         }
     }
 
