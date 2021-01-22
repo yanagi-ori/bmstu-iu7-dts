@@ -46,7 +46,7 @@ int resize_arr(stack_array_t **stack, size_t size)
 }
 
 
-int push_arr(stack_array_t **stack, int value)
+int push_arr(stack_array_t **stack, char value[100])
 {
     if ((*stack)->top >= (*stack)->size)
     {
@@ -55,19 +55,19 @@ int push_arr(stack_array_t **stack, int value)
             return MEMORY_ALLOCATION_ERROR;
         }
     }
-    (*stack)->data[(*stack)->top] = value;
+    (*stack)->data[(*stack)->top] = strdup(value);
     (*stack)->top++;
     return 0;
 }
 
-int pop_arr(stack_array_t *stack, int *element)
+int pop_arr(stack_array_t *stack, char **element)
 {
     if (stack->top == 0)
     {
         return (STACK_UNDERFLOW);
     }
     stack->top--;
-    int tmp = stack->data[stack->top];
+    char *tmp = stack->data[stack->top];
     *element = tmp;
     return 0;
 }

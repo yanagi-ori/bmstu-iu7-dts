@@ -58,7 +58,7 @@ void calculate_eff(int size, int k)
         }
         for (int i = 0; i < size; i++)
         {
-            int element = 0;
+            char *element;
             rc = pop_arr(arr, &element);
             if (rc != 0)
             {

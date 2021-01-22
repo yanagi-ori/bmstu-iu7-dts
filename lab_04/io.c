@@ -5,7 +5,6 @@
 #include "io.h"
 #include "stack_array.h"
 #include "stack_list.h"
-#include "benchmark.h"
 
 void print_menu()
 {
@@ -27,6 +26,8 @@ int array_stack_process()
     int element = 0;
     int tmp = -1;
     int rc = 0;
+    char address[100];
+    char *temp_address = NULL;
 
     while (tmp != 0)
     {
@@ -37,20 +38,21 @@ int array_stack_process()
         {
             case 1:
                 printf("Enter the memory address: \n");
-                rc = scanf("%d", &tmp);
+                rc = scanf("%99s", address);
                 if (rc != 1)
                 {
                     return IO_ELEMENT;
                 }
-                push_arr(&stack, tmp);
+                push_arr(&stack, address);
                 break;
             case 2:
-                rc = pop_arr(stack, &element);
+                rc = pop_arr(stack, &temp_address);
                 if (rc != 0)
                 {
                     return rc;
                 }
-                printf("0x%d\n", element);
+                printf("0x%s\n", temp_address);
+                free(temp_address);
                 break;
             case 3:
                 current_state_arr(stack);

@@ -14,7 +14,7 @@ typedef struct stack_array
 {
     size_t size;
     size_t top;
-    int *data;
+    char **data;
 } stack_array_t;
 
 stack_array_t *create_arr_stack(size_t size);
@@ -23,9 +23,9 @@ void delete_arr_stack(stack_array_t **stack);
 
 int resize_arr(stack_array_t **stack, size_t size);
 
-int push_arr(stack_array_t **stack, int value);
+int push_arr(stack_array_t **stack, char value[100]);
 
-int pop_arr(stack_array_t *stack, int *element);
+int pop_arr(stack_array_t *stack, char **element);
 
 int current_state_arr(stack_array_t *stack);
 
