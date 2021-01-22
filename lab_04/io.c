@@ -5,6 +5,7 @@
 #include "io.h"
 #include "stack_array.h"
 #include "stack_list.h"
+#include "benchmark.h"
 
 void print_menu()
 {
@@ -16,7 +17,7 @@ void print_menu()
 
 int array_stack_process()
 {
-    stack_t *stack = create_arr_stack(sizeof(int));
+    stack_array_t *stack = create_arr_stack(sizeof(int));
     if (stack == NULL)
     {
         return MEMORY_ALLOCATION_ERROR;
@@ -25,45 +26,44 @@ int array_stack_process()
 
     int element = 0;
     int tmp = -1;
+    int rc = 0;
+
     while (tmp != 0)
     {
         print_menu();
-        int rc = scanf("%d", &tmp);
-        if (rc == 1)
+        scanf("%d", &tmp);
+
+        switch (tmp)
         {
-            switch (tmp)
-            {
-                case 1:
-                    printf("Enter the memory address: \n");
-                    rc = scanf("%x", &element);
-                    if (rc != 1)
-                    {
-                        return IO_ELEMENT;
-                    }
-                    push_arr(stack, element);
-                    break;
-                case 2:
-                    rc = pop_arr(stack, &element);
-                    if (rc != 0){
-                        return rc;
-                    }
-                    printf("0x%x\n", element);
-                    break;
-                case 3:
-                    current_state_arr(stack);
-                    break;
-                case 0:
-                    delete_arr_stack(&stack);
-                    break;
-                default:
-                    delete_arr_stack(&stack);
-                    return IO_MENU_ITEM;
-            }
+            case 1:
+                printf("Enter the memory address: \n");
+                rc = scanf("%d", &tmp);
+                if (rc != 1)
+                {
+                    return IO_ELEMENT;
+                }
+                push_arr(&stack, tmp);
+                break;
+            case 2:
+                rc = pop_arr(stack, &element);
+                if (rc != 0)
+                {
+                    return rc;
+                }
+                printf("0x%d\n", element);
+                break;
+            case 3:
+                current_state_arr(stack);
+                break;
+            case 0:
+                delete_arr_stack(&stack);
+                break;
+            default:
+                delete_arr_stack(&stack);
+                return IO_MENU_ITEM;
+
         }
-        else
-        {
-            return IO_MENU_ITEM;
-        }
+
     }
 
     return 0;
@@ -71,10 +71,9 @@ int array_stack_process()
 
 int list_stack_process()
 {
-    list_stack_t *stack = NULL;
-    list_stack_t *node;
-    freed_addresses_t *head = NULL;
-    int element = 0;
+    stack_list_t *stack = NULL;
+    stack_list_t *node;
+    stack_list_t *head = NULL;
     int tmp = -1;
     while (tmp != 0)
     {
@@ -85,28 +84,29 @@ int list_stack_process()
             switch (tmp)
             {
                 case 1:
-                    printf("Enter the memory address: \n");
-                    rc = scanf("%x", &element);
-                    if (rc != 1)
+                    rc = push_list(&stack);
+                    if (rc != 0)
                     {
-                        return IO_ELEMENT;
-                    }
-                    rc = push_list(&stack, element);
-                    if (rc != 0){
                         return rc;
                     }
+                    find_in_freed(&head, stack);
                     break;
                 case 2:
                     node = pop_list(&stack);
-                    printf("0x%x\n", node->value);
-
+                    printf("0x%p\n", node->this);
+                    add_to_freed(&head, node);
                     free(node);
                     break;
                 case 3:
+                    get_current_state_list(stack, head);
                     break;
                 case 0:
+                    free_list(stack);
+                    free_list(head);
                     break;
                 default:
+                    free_list(stack);
+                    free_list(head);
                     return IO_MENU_ITEM;
             }
         }
