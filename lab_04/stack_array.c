@@ -28,6 +28,10 @@ stack_array_t *create_arr_stack(size_t size)
 
 void delete_arr_stack(stack_array_t **stack)
 {
+    for (int i = 0; i < (*stack)->top; i++)
+    {
+        free((*stack)->data[i]);
+    }
     free((*stack)->data);
     free(*stack);
     *stack = NULL;
