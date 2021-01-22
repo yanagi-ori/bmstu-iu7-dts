@@ -7,10 +7,10 @@
 #include "stack_array.h"
 #include "errors.h"
 
-stack_t *create_arr_stack(size_t size)
+stack_array_t *create_arr_stack(size_t size)
 {
-    stack_t *out = NULL;
-    out = malloc(sizeof(stack_t));
+    stack_array_t *out = NULL;
+    out = malloc(sizeof(stack_array_t));
     if (out == NULL)
     {
         return NULL;
@@ -26,7 +26,7 @@ stack_t *create_arr_stack(size_t size)
     return out;
 }
 
-void delete_arr_stack(stack_t **stack)
+void delete_arr_stack(stack_array_t **stack)
 {
     free((*stack)->data);
     free(*stack);
@@ -34,11 +34,11 @@ void delete_arr_stack(stack_t **stack)
 }
 
 
-int resize_arr(stack_t *stack, size_t size)
+int resize_arr(stack_array_t **stack, size_t size)
 {
-    stack->size *= MULTIPLIER;
-    stack->data = realloc(stack->data, stack->size * size);
-    if (stack->data == NULL)
+    (*stack)->size *= MULTIPLIER;
+    (*stack)->data = realloc((*stack)->data, (*stack)->size * size);
+    if ((*stack)->data == NULL)
     {
         return STACK_OVERFLOW;
     }
@@ -46,21 +46,21 @@ int resize_arr(stack_t *stack, size_t size)
 }
 
 
-int push_arr(stack_t *stack, int value)
+int push_arr(stack_array_t **stack, int value)
 {
-    if (stack->top >= stack->size)
+    if ((*stack)->top >= (*stack)->size)
     {
         if (resize_arr(stack, sizeof(int)) != 0)
         {
             return MEMORY_ALLOCATION_ERROR;
         }
     }
-    stack->data[stack->top] = value;
-    stack->top++;
+    (*stack)->data[(*stack)->top] = value;
+    (*stack)->top++;
     return 0;
 }
 
-int pop_arr(stack_t *stack, int *element)
+int pop_arr(stack_array_t *stack, int *element)
 {
     if (stack->top == 0)
     {
@@ -72,7 +72,7 @@ int pop_arr(stack_t *stack, int *element)
     return 0;
 }
 
-int current_state_arr(stack_t *stack)
+int current_state_arr(stack_array_t *stack)
 {
     int size = stack->top;
     printf("Current state of stack: \n");
