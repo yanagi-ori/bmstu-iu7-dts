@@ -18,23 +18,36 @@ int main()
         switch (tmp)
         {
             case 1:
-                rc = array_stack_process(); //todo: done, check?
+                rc = array_stack_process();
                 break;
             case 2:
                 rc = list_stack_process();
                 break;
             case 3:
                 benchmark();
+                rc = 0;
                 break;
             default:
                 fprintf(stderr, "Wrong menu item was entered\n");
                 rc = IO_MENU_ITEM;
         }
-        if (rc != 0)
+        if (rc == STACK_OVERFLOW)
         {
-            printf("Entered number in incorrect format\n");
-            rc = IO_ELEMENT;
+            fprintf(stderr, "STACK OVERFLOW");
         }
+        if (rc == STACK_UNDERFLOW)
+        {
+            fprintf(stderr, "STACK UNDERFLOW");
+        }
+        if (rc == MEMORY_ALLOCATION_ERROR)
+        {
+            fprintf(stderr, "Memory allocation error");
+        }
+    }
+    else
+    {
+        printf("Entered number in incorrect format\n");
+        rc = IO_ELEMENT;
     }
 
     return rc;

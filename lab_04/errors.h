@@ -9,7 +9,6 @@
 #define IO_ELEMENT              -102
 #define STACK_OVERFLOW          -200
 #define STACK_UNDERFLOW         -201
-#define OUT_OF_MEMORY           -202
 #define MEMORY_ALLOCATION_ERROR -301
 
 #endif //LAB_04_ERRORS_H

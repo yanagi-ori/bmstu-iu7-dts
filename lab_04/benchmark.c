@@ -1,12 +1,31 @@
 //
 // Created by Ivan Bogatyrev on 1/22/2021.
 //
-
-#include <time.h>
+#include <stdint.h>
+#include <inttypes.h>
+#include "benchmark.h"
+#include <stdio.h>
 #include <math.h>
 #include "stack_list.h"
 #include "stack_array.h"
-#include "benchmark.h"
+
+
+uint64_t tick(void)
+{
+    uint32_t high, low;
+    __asm__ __volatile__ (
+    "rdtsc\n"
+    "movl %%edx, %0\n"
+    "movl %%eax, %1\n"
+    : "=r" (high), "=r" (low)
+    ::"%rax", "%rbx", "%rcx", "%rdx"
+    );
+
+    uint64_t ticks = ((uint64_t) high << 32) | low;
+
+    return ticks;
+}
+
 
 int push_list_comp(stack_list_t **head)
 {
@@ -37,19 +56,19 @@ int pop_list_comp(stack_list_t **head)
     return 0;
 }
 
-void calculate_eff(int size, int k)
+void calculate_eff(int size)
 {
     int rc;
-    time_t start, end;
+    uint64_t start, end;
     stack_list_t *list = NULL;
-    stack_array_t *arr = create_arr_stack(sizeof(int));
-    int end_t = (int) pow(10, k);
-    start = clock();
+    stack_array_t *arr = create_arr_stack(sizeof(char *));
+    int end_t = 10;
+    start = tick();
     for (int j = 0; j < end_t; j++)
     {
         for (int i = 0; i < size; i++)
         {
-            rc = push_arr(&arr, 1);
+            rc = push_arr(&arr, "1");
             if (rc != 0)
             {
                 printf("ERROR WHILE INIT OF COMPARE %d\n", rc);
@@ -67,9 +86,9 @@ void calculate_eff(int size, int k)
             }
         }
     }
-    end = clock();
-    double time_res1 = ((double) (end - start) / CLOCKS_PER_SEC);
-    start = clock();
+    end = tick();
+    uint64_t time_res1 = (end - start);
+    start = tick();
     for (int j = 0; j < end_t; j++)
     {
         for (int i = 0; i < size; i++)
@@ -82,12 +101,12 @@ void calculate_eff(int size, int k)
             pop_list_comp(&list);
         }
     }
-    end = clock();
-    double time_res2 = ((double) (end - start) / CLOCKS_PER_SEC);
-    size_t size_arr = size * sizeof(int) + sizeof(int);
+    end = tick();
+    uint64_t time_res2 = (end - start);
+    size_t size_arr = arr->size * sizeof(char *) + sizeof(size_t) * 2;
     size_t size_list = size * sizeof(stack_list_t);
-    printf("%7d |       %4.2lfE-%d sec       |       %4.2lfE-%d sec    |", size, time_res1, k, time_res2, k);
-    printf("          %4.2lf%%        |     %8I64d       |    %8I64d       |                     %I64d%%|\n",
+    printf("%7d |      %"PRId64 "      |     %"PRId64 "    |", size, time_res1, time_res2);
+    printf("           %2"PRId64 "%%          |     %8I64d       |    %8I64d       |                     %I64d%%|\n",
            100 - time_res1 * 100 / time_res2,
            size_arr, size_list, 100 - size_arr * 100 / size_list);
 }
@@ -95,16 +114,17 @@ void calculate_eff(int size, int k)
 void benchmark()
 {
     puts("Processing time is time for push and time for pop");
-    puts("   SIZE |     ARRAY STACK TIME    |    LIST STACK TIME   | ARRAY STACK EFFICIENCY "
+    puts("   SIZE |    ARRAY STACK TICKS |  LIST STACK TICKS | ARRAY STACK EFFICIENCY "
          "| ARRAY STACK MEMORY | LIST STACK MEMORY | ARRAY MEMORY EFFICIENCY|");
-    puts("-------------------------------------------------------------------------------"
-         "----------------------------------------------------------------------");
-    calculate_eff(10, 6);
-    calculate_eff(50, 6);
-    calculate_eff(100, 5);
-    calculate_eff(500, 5);
-    calculate_eff(1000, 4);
-    calculate_eff(5000, 4);
-    calculate_eff(10000, 3);
-    calculate_eff(100000, 2);
+    puts("----------------------------------------------------------------------------------"
+         "-------------------------------------------------------------");
+    calculate_eff(1);
+    calculate_eff(10);
+    calculate_eff(50);
+    calculate_eff(100);
+    calculate_eff(500);
+    calculate_eff(1000);
+    calculate_eff(5000);
+    calculate_eff(10000);
+    calculate_eff(100000);
 }

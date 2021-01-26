@@ -16,7 +16,7 @@ void print_menu()
 
 int array_stack_process()
 {
-    stack_array_t *stack = create_arr_stack(sizeof(int));
+    stack_array_t *stack = create_arr_stack(sizeof(char *));
     if (stack == NULL)
     {
         return MEMORY_ALLOCATION_ERROR;

@@ -54,7 +54,7 @@ int push_arr(stack_array_t **stack, char value[100])
 {
     if ((*stack)->top >= (*stack)->size)
     {
-        if (resize_arr(stack, sizeof(int)) != 0)
+        if (resize_arr(stack, sizeof(char *)) != 0)
         {
             return MEMORY_ALLOCATION_ERROR;
         }
@@ -82,7 +82,7 @@ int current_state_arr(stack_array_t *stack)
     printf("Current state of stack: \n");
     for (int i = size - 1; i >= 0; i--)
     {
-        printf("0x%x\n", stack->data[i]);
+        printf("0x%s\n", stack->data[i]);
     }
     return 0;
 }

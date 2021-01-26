@@ -69,18 +69,6 @@ stack_list_t *pop_list(stack_list_t **head)
     return out;
 }
 
-
-size_t get_size_list(const stack_list_t *head)
-{
-    size_t size = 0;
-    while (head)
-    {
-        size++;
-        head = head->next;
-    }
-    return size;
-}
-
 void print_stack_list(stack_list_t *head)
 {
     stack_list_t *temp = head;
