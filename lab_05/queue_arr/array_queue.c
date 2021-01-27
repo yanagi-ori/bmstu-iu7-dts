@@ -25,6 +25,7 @@ short append_arr_queue(queue_arr_t *temp_queue, float temp_time)
         printf("Queue overflow\n");
         return QUEUE_OVERFLOW;
     }
+    return 0;
 }
 
 float remove_arr_queue(queue_arr_t *temp_queue)
@@ -39,6 +40,19 @@ float remove_arr_queue(queue_arr_t *temp_queue)
     {
         temp_queue->queue[h] = temp_queue->queue[h + 1];
     }
-    temp_queue->end -= 1;
+    temp_queue->end--;
     return temp;
 }
+
+void get_added_queue_arr(queue_arr_t *queueArr, short queue_num)
+{
+    printf("added to queue %d: 0x%p\n", queue_num, &queueArr->queue[queueArr->end - 1]);
+}
+
+void get_deleted_queue_arr(queue_arr_t *queueArr, short queue_num)
+{
+    printf("freed from queue %d: 0x%p\n", queue_num, &queueArr->queue[queueArr->begin]);
+}
+
+
+

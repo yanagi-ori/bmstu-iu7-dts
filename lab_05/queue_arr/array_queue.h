@@ -22,4 +22,8 @@ short append_arr_queue(queue_arr_t *temp_queue, float temp_time);
 
 float remove_arr_queue(queue_arr_t *temp_queue);
 
+void get_added_queue_arr(queue_arr_t *queueArr, short queue_num);
+
+void get_deleted_queue_arr(queue_arr_t *queueArr, short queue_num);
+
 #endif //LAB_05_ARRAY_QUEUE_H

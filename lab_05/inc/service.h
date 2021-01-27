@@ -26,7 +26,7 @@ typedef struct queue
     void *data;
 } queue_t;
 
-int process(int mode, void *data1, void *data2);
+int process(int mode, void *queue1, void *data2, bool additional_output);
 
 float float_rand(float min, float max);
 

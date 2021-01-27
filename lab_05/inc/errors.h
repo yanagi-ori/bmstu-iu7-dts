@@ -9,4 +9,6 @@
 #define QUEUE_OVERFLOW -2
 #define QUEUE_UNDERFLOW -3
 
+#define MEMORY_ALLOCATION_ERROR -4
+
 #endif //LAB_05_ERRORS_H
