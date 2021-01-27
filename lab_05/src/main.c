@@ -1,16 +1,19 @@
 #include <stdio.h>
+#include <stdint.h>
 #include "../inc/errors.h"
 #include "../inc/service.h"
 #include "../queue_arr/array_queue.h"
 #include "../queue_list/list_queue.h"
+#include "../inc/timer.h"
 
 int main()
 {
-    printf("LAB 5. QUEUES");
+    printf("LAB 5. QUEUES\n");
 
     printf("Choose the type of queues: \n"
            "1. Array;\n"
-           "2. Linked list.\n");
+           "2. Linked list;\n"
+           "3. performance test.\n");
 
     int rc, item;
 
@@ -81,6 +84,52 @@ int main()
                 process(1, (void *) &queueList1, (void *) &queueList2, addit_info);
                 free_list(*queueList1.head);
                 free_list(*queueList2.head);
+                break;
+            }
+            case 3:
+            {
+                queue_arr_t queueArr;
+                init_arr_queue(&queueArr);
+                queue_list_t queueList;
+                init_list_queue(&queueList);
+                uint64_t start = 0;
+                uint64_t end = 0;
+                uint64_t time_res = 0;
+                const short iterations = 100;
+
+                start = tick();
+                for (short i = 0; i < iterations; i++)
+                {
+                    append_arr_queue(&queueArr, (float) i);
+                }
+                end = tick();
+                printf("Append in array: %llu ticks in average\n", (end - start) / iterations);
+
+                start = tick();
+                for (short i = 0; i < iterations; i++)
+                {
+                    append_list_queue(&queueList, (float) i);
+                }
+                end = tick();
+                printf("Append in list: %llu ticks in average\n", (end - start) / iterations);
+
+                start = tick();
+                for (short i = 0; i < iterations; i++)
+                {
+                    remove_arr_queue(&queueArr);
+                }
+                end = tick();
+                printf("Pop in array: %llu ticks in average\n", (end - start) / iterations);
+
+                start = tick();
+                for (short i = 0; i < iterations; i++)
+                {
+                    remove_list_queue(&queueList);
+                }
+                end = tick();
+                printf("Pop in list: %llu ticks in average\n", (end - start) / iterations);
+
+                free_list(*queueList.head);
                 break;
             }
             default:
