@@ -60,12 +60,13 @@ float remove_list_queue(queue_list_t *queueList)
     {
         return QUEUE_UNDERFLOW;
     }
+    float temp = (*queueList->head)->data;
     node_t *node;
     node = (*queueList->head)->next;
     free(*queueList->head);
     *queueList->head = node;
     queueList->end--;
-    return 0;
+    return temp;
 }
 
 
