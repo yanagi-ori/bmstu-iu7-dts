@@ -13,8 +13,11 @@ typedef struct serviceApparatus
     int passed;
     float timer;
     float process_time;
-    int queue_1_amount;
-    int queue_2_amount;
+    int queue_1_passed;
+    int queue_2_passed;
+    int q1_len_sum;
+    int q2_len_sum;
+    int measurements;
 } service_apparatus_t;
 
 typedef struct queue
