@@ -79,7 +79,8 @@ int main()
                 }
 
                 process(1, (void *) &queueList1, (void *) &queueList2, addit_info);
-
+                free_list(*queueList1.head);
+                free_list(*queueList2.head);
                 break;
             }
             default:

@@ -85,3 +85,13 @@ void get_deleted_queue_list(queue_list_t *queueList, short queue_num)
 {
     printf("freed from queue %d: 0x%p\n", queue_num, *queueList->head);
 }
+
+void free_list(node_t *head)
+{
+    while (head)
+    {
+        node_t *next = head->next;
+        free(head);
+        head = next;
+    }
+}

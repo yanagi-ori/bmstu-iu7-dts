@@ -29,5 +29,6 @@ void get_added_queue_list(queue_list_t *queueArr, short queue_num);
 
 void get_deleted_queue_list(queue_list_t *queueArr, short queue_num);
 
+void free_list(node_t *head);
 
 #endif //LAB_05_LIST_QUEUE_H
