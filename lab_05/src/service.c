@@ -10,6 +10,7 @@
 #include "../inc/main.h"
 #include "../queue_arr/array_queue.h"
 #include "../queue_list/list_queue.h"
+#include "../inc/errors.h"
 
 
 float float_rand(float min, float max)
@@ -126,7 +127,9 @@ int process(int mode, void *data1, void *data2, bool additional_output)
             if (queue1->upcoming == 0)
             {
                 queue1->got++;
-                append_arr_queue(queue1, float_rand(T3_MIN, T3_MAX));
+                if (append_arr_queue(queue1, float_rand(T3_MIN, T3_MAX)) < 0){
+                    return QUEUE_OVERFLOW;
+                }
                 get_samples(&serviceApparatus, queue1->end - queue1->begin, queue2->end - queue2->begin);
                 if (additional_output)
                 {
@@ -137,7 +140,10 @@ int process(int mode, void *data1, void *data2, bool additional_output)
             if (queue2->upcoming == 0)
             {
                 queue2->got++;
-                append_arr_queue(queue2, float_rand(T4_MIN, T4_MAX));
+                if (append_arr_queue(queue2, float_rand(T4_MIN, T4_MAX)) <0)
+                {
+                    return QUEUE_OVERFLOW;
+                }
                 get_samples(&serviceApparatus, queue1->end - queue1->begin, queue2->end - queue2->begin);
                 if (additional_output)
                 {
@@ -156,12 +162,16 @@ int process(int mode, void *data1, void *data2, bool additional_output)
                 {
                     if ((queue1->begin != queue1->end))
                     {
-                        serviceApparatus.process_time = remove_arr_queue(queue1);
-                        get_samples(&serviceApparatus, queue1->end - queue1->begin, queue2->end - queue2->begin);
                         if (additional_output)
                         {
                             get_deleted_queue_arr(queue1, 1);
                         }
+                        serviceApparatus.process_time = remove_arr_queue(queue1);
+                        if (serviceApparatus.process_time < 0)
+                        {
+                            return QUEUE_UNDERFLOW;
+                        }
+                        get_samples(&serviceApparatus, queue1->end - queue1->begin, queue2->end - queue2->begin);
                         serviceApparatus.isBusy = true;
                         serviceApparatus.queue_1_passed++;
 
@@ -169,12 +179,16 @@ int process(int mode, void *data1, void *data2, bool additional_output)
                     else if (queue2->begin != queue2->end)
                     {
                         rule = 1;
-                        serviceApparatus.process_time = remove_arr_queue(queue2);
-                        get_samples(&serviceApparatus, queue1->end - queue1->begin, queue2->end - queue2->begin);
                         if (additional_output)
                         {
                             get_deleted_queue_arr(queue2, 2);
                         }
+                        serviceApparatus.process_time = remove_arr_queue(queue2);
+                        if (serviceApparatus.process_time < 0)
+                        {
+                            return QUEUE_UNDERFLOW;
+                        }
+                        get_samples(&serviceApparatus, queue1->end - queue1->begin, queue2->end - queue2->begin);
                         serviceApparatus.isBusy = true;
                         serviceApparatus.queue_2_passed++;
                     }
@@ -187,12 +201,16 @@ int process(int mode, void *data1, void *data2, bool additional_output)
                 {
                     if ((queue2->begin != queue2->end))
                     {
-                        serviceApparatus.process_time = remove_arr_queue(queue2);
-                        get_samples(&serviceApparatus, queue1->end - queue1->begin, queue2->end - queue2->begin);
                         if (additional_output)
                         {
                             get_deleted_queue_arr(queue2, 2);
                         }
+                        serviceApparatus.process_time = remove_arr_queue(queue2);
+                        if (serviceApparatus.process_time < 0)
+                        {
+                            return QUEUE_UNDERFLOW;
+                        }
+                        get_samples(&serviceApparatus, queue1->end - queue1->begin, queue2->end - queue2->begin);
                         serviceApparatus.isBusy = true;
                         serviceApparatus.queue_2_passed++;
 
@@ -200,12 +218,16 @@ int process(int mode, void *data1, void *data2, bool additional_output)
                     else if (queue1->begin != queue1->end)
                     {
                         rule = 0;
-                        serviceApparatus.process_time = remove_arr_queue(queue1);
-                        get_samples(&serviceApparatus, queue1->end - queue1->begin, queue2->end - queue2->begin);
                         if (additional_output)
                         {
                             get_deleted_queue_arr(queue1, 1);
                         }
+                        serviceApparatus.process_time = remove_arr_queue(queue1);
+                        if (serviceApparatus.process_time < 0)
+                        {
+                            return QUEUE_UNDERFLOW;
+                        }
+                        get_samples(&serviceApparatus, queue1->end - queue1->begin, queue2->end - queue2->begin);
                         serviceApparatus.isBusy = true;
                         serviceApparatus.queue_1_passed++;
                     }
@@ -277,7 +299,10 @@ int process(int mode, void *data1, void *data2, bool additional_output)
             if (queue1->upcoming == 0)
             {
                 queue1->got++;
-                append_list_queue(queue1, float_rand(T3_MIN, T3_MAX));
+                if (append_list_queue(queue1, float_rand(T3_MIN, T3_MAX)))
+                {
+                    return QUEUE_OVERFLOW;
+                }
                 get_samples(&serviceApparatus, queue1->end - queue1->begin, queue2->end - queue2->begin);
                 if (additional_output)
                 {
@@ -288,7 +313,10 @@ int process(int mode, void *data1, void *data2, bool additional_output)
             if (queue2->upcoming == 0)
             {
                 queue2->got++;
-                append_list_queue(queue2, float_rand(T4_MIN, T4_MAX));
+                if (append_list_queue(queue2, float_rand(T4_MIN, T4_MAX)))
+                {
+                    return QUEUE_OVERFLOW;
+                }
                 get_samples(&serviceApparatus, queue1->end - queue1->begin, queue2->end - queue2->begin);
                 if (additional_output)
                 {
@@ -312,6 +340,10 @@ int process(int mode, void *data1, void *data2, bool additional_output)
                             get_deleted_queue_list(queue1, 1);
                         }
                         serviceApparatus.process_time = remove_list_queue(queue1);
+                        if (serviceApparatus.process_time < 0)
+                        {
+                            return QUEUE_UNDERFLOW;
+                        }
                         get_samples(&serviceApparatus, queue1->end - queue1->begin, queue2->end - queue2->begin);
                         serviceApparatus.isBusy = true;
                         serviceApparatus.queue_1_passed++;
@@ -320,12 +352,16 @@ int process(int mode, void *data1, void *data2, bool additional_output)
                     else if (queue2->begin != queue2->end)
                     {
                         rule = 1;
-                        serviceApparatus.process_time = remove_list_queue(queue2);
-                        get_samples(&serviceApparatus, queue1->end - queue1->begin, queue2->end - queue2->begin);
                         if (additional_output)
                         {
                             get_deleted_queue_list(queue2, 2);
                         }
+                        serviceApparatus.process_time = remove_list_queue(queue2);
+                        if (serviceApparatus.process_time < 0)
+                        {
+                            return QUEUE_UNDERFLOW;
+                        }
+                        get_samples(&serviceApparatus, queue1->end - queue1->begin, queue2->end - queue2->begin);
                         serviceApparatus.isBusy = true;
                         serviceApparatus.queue_2_passed++;
                     }
@@ -338,12 +374,16 @@ int process(int mode, void *data1, void *data2, bool additional_output)
                 {
                     if ((queue2->begin != queue2->end))
                     {
-                        serviceApparatus.process_time = remove_list_queue(queue2);
-                        get_samples(&serviceApparatus, queue1->end - queue1->begin, queue2->end - queue2->begin);
                         if (additional_output)
                         {
                             get_deleted_queue_list(queue2, 2);
                         }
+                        serviceApparatus.process_time = remove_list_queue(queue2);
+                        if (serviceApparatus.process_time < 0)
+                        {
+                            return QUEUE_UNDERFLOW;
+                        }
+                        get_samples(&serviceApparatus, queue1->end - queue1->begin, queue2->end - queue2->begin);
                         serviceApparatus.isBusy = true;
                         serviceApparatus.queue_2_passed++;
 
@@ -351,12 +391,16 @@ int process(int mode, void *data1, void *data2, bool additional_output)
                     else if (queue1->begin != queue1->end)
                     {
                         rule = 0;
-                        serviceApparatus.process_time = remove_list_queue(queue1);
-                        get_samples(&serviceApparatus, queue1->end - queue1->begin, queue2->end - queue2->begin);
                         if (additional_output)
                         {
                             get_deleted_queue_list(queue1, 1);
                         }
+                        serviceApparatus.process_time = remove_list_queue(queue1);
+                        if (serviceApparatus.process_time < 0)
+                        {
+                            return QUEUE_UNDERFLOW;
+                        }
+                        get_samples(&serviceApparatus, queue1->end - queue1->begin, queue2->end - queue2->begin);
                         serviceApparatus.isBusy = true;
                         serviceApparatus.queue_1_passed++;
                     }
