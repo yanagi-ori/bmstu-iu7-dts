@@ -20,12 +20,6 @@ typedef struct serviceApparatus
     int measurements;
 } service_apparatus_t;
 
-typedef struct queue
-{
-    float wait_time;
-    void *data;
-} queue_t;
-
 int process(int mode, void *queue1, void *data2, bool additional_output);
 
 float float_rand(float min, float max);
