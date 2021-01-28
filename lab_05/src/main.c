@@ -35,18 +35,18 @@ int main()
                 printf("Set the visibility of the freed addresses: \n0 - No; 1 - Yes\n");
                 int temp;
                 rc = scanf("%d", &temp);
-                bool addit_info;
+                bool additional_info;
                 if (rc != 1)
                 {
                     return IO_ERROR;
                 }
                 else if (temp == 1)
                 {
-                    addit_info = true;
+                    additional_info = true;
                 }
                 else if (temp == 0)
                 {
-                    addit_info = false;
+                    additional_info = false;
                 }
                 else
                 {
@@ -54,7 +54,7 @@ int main()
                     return IO_ERROR;
                 }
                 START_MEASURING()
-                rc = process(0, (void *) &queueArr1, (void *) &queueArr2, addit_info);
+                rc = process(0, (void *) &queueArr1, (void *) &queueArr2, additional_info);
                 if (rc == QUEUE_UNDERFLOW)
                 {
                     fprintf(stderr, "Underflow happened");
@@ -77,18 +77,18 @@ int main()
                 printf("Set the visibility of the freed addresses: \n0 - No; 1 - Yes\n");
                 int temp;
                 rc = scanf("%d", &temp);
-                bool addit_info;
+                bool additional_info;
                 if (rc != 1)
                 {
                     return IO_ERROR;
                 }
                 else if (temp == 1)
                 {
-                    addit_info = true;
+                    additional_info = true;
                 }
                 else if (temp == 0)
                 {
-                    addit_info = false;
+                    additional_info = false;
                 }
                 else
                 {
@@ -96,7 +96,7 @@ int main()
                     return IO_ERROR;
                 }
                 START_MEASURING()
-                rc = process(1, (void *) &queueList1, (void *) &queueList2, addit_info);
+                rc = process(1, (void *) &queueList1, (void *) &queueList2, additional_info);
                 if (rc == QUEUE_UNDERFLOW)
                 {
                     fprintf(stderr, "Underflow happened");
@@ -118,8 +118,8 @@ int main()
                 init_arr_queue(&queueArr);
                 queue_list_t queueList;
                 init_list_queue(&queueList);
-                uint64_t start = 0;
-                uint64_t end = 0;
+                uint64_t start;
+                uint64_t end;
                 const short iterations = 1000;
 
                 start = tick();
