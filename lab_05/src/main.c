@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdint.h>
+#include <stdlib.h>
+#include <time.h>
 #include "../inc/errors.h"
 #include "../inc/service.h"
 #include "../queue_arr/array_queue.h"
@@ -16,10 +18,12 @@ int main()
            "3. performance test.\n");
 
     int rc, item;
+    struct timespec start_time_s, end_time_s;
 
     rc = scanf("%d", &item);
     if (rc == 1)
     {
+
         switch (item)
         {
             case 1:
@@ -49,6 +53,7 @@ int main()
                     fprintf(stderr, "Wrong menu item");
                     return IO_ERROR;
                 }
+                START_MEASURING()
                 rc = process(0, (void *) &queueArr1, (void *) &queueArr2, addit_info);
                 if (rc == QUEUE_UNDERFLOW)
                 {
@@ -58,6 +63,8 @@ int main()
                 {
                     fprintf(stderr, "Overflow happened");
                 }
+                END_MEASURING()
+                SHOW_TIME("Program execution time: ");
                 break;
             }
             case 2:
@@ -88,7 +95,7 @@ int main()
                     fprintf(stderr, "Wrong menu item");
                     return IO_ERROR;
                 }
-
+                START_MEASURING()
                 rc = process(1, (void *) &queueList1, (void *) &queueList2, addit_info);
                 if (rc == QUEUE_UNDERFLOW)
                 {
@@ -98,6 +105,9 @@ int main()
                 {
                     fprintf(stderr, "Overflow happened");
                 }
+                END_MEASURING()
+
+                SHOW_TIME("Program execution time: ");
                 free_list(*queueList1.head);
                 free_list(*queueList2.head);
                 break;
@@ -110,7 +120,7 @@ int main()
                 init_list_queue(&queueList);
                 uint64_t start = 0;
                 uint64_t end = 0;
-                const short iterations = 100;
+                const short iterations = 1000;
 
                 start = tick();
                 for (short i = 0; i < iterations; i++)
@@ -127,6 +137,11 @@ int main()
                 }
                 end = tick();
                 printf("Append in list: %llu ticks in average\n", (end - start) / iterations);
+
+                printf("Size of array realization %lu Bytes in average\n",
+                       sizeof(queueArr) / 1000);
+                printf("Size of list realization %lu Bytes in average\n",
+                       sizeof(queueList) + 999 * (sizeof(node_t)) / 1000);
 
                 start = tick();
                 for (short i = 0; i < iterations; i++)
@@ -145,6 +160,7 @@ int main()
                 printf("Pop in list: %llu ticks in average\n", (end - start) / iterations);
 
                 free_list(*queueList.head);
+
                 break;
             }
             default:
