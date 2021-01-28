@@ -49,7 +49,15 @@ int main()
                     fprintf(stderr, "Wrong menu item");
                     return IO_ERROR;
                 }
-                process(0, (void *) &queueArr1, (void *) &queueArr2, addit_info);
+                rc = process(0, (void *) &queueArr1, (void *) &queueArr2, addit_info);
+                if (rc == QUEUE_UNDERFLOW)
+                {
+                    fprintf(stderr, "Underflow happened");
+                }
+                else if (rc == QUEUE_OVERFLOW)
+                {
+                    fprintf(stderr, "Overflow happened");
+                }
                 break;
             }
             case 2:
@@ -81,7 +89,15 @@ int main()
                     return IO_ERROR;
                 }
 
-                process(1, (void *) &queueList1, (void *) &queueList2, addit_info);
+                rc = process(1, (void *) &queueList1, (void *) &queueList2, addit_info);
+                if (rc == QUEUE_UNDERFLOW)
+                {
+                    fprintf(stderr, "Underflow happened");
+                }
+                else if (rc == QUEUE_OVERFLOW)
+                {
+                    fprintf(stderr, "Overflow happened");
+                }
                 free_list(*queueList1.head);
                 free_list(*queueList2.head);
                 break;
@@ -94,7 +110,6 @@ int main()
                 init_list_queue(&queueList);
                 uint64_t start = 0;
                 uint64_t end = 0;
-                uint64_t time_res = 0;
                 const short iterations = 100;
 
                 start = tick();
