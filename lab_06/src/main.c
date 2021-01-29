@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "../inc/errors.h"
 #include "../inc/io.h"
+#include "../inc/timer.h"
 
 int main(int argc, char **argv)
 {
@@ -33,7 +34,11 @@ int main(int argc, char **argv)
         fprintf(stderr, "Could not read the file to the end");
     }
 
+    timer_t timer;
+    timer.start = tick();
 
+    timer.end = tick();
+    printf("The binary tree was built in %llu ticks\n", get_time(timer));
 
 
     return 0;
