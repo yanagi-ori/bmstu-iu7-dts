@@ -2,6 +2,7 @@
 #include "../inc/errors.h"
 #include "../inc/io.h"
 #include "../inc/timer.h"
+#include "../inc/bin_tree.h"
 
 int main(int argc, char **argv)
 {
@@ -34,11 +35,18 @@ int main(int argc, char **argv)
         fprintf(stderr, "Could not read the file to the end");
     }
 
+    tree_node_t *bin_tree = NULL;
     timer_t timer;
     timer.start = tick();
-
+    for (int i = 0; i < file_len; i++)
+    {
+        if (tree_find(bin_tree, arr[i]) == NULL)
+        {
+            bin_tree = tree_insert(bin_tree, arr[i]);
+        }
+    }
     timer.end = tick();
-    printf("The binary tree was built in %llu ticks\n", get_time(timer));
+    printf("The binary bin_tree was built in %llu ticks\n", get_time(timer));
 
 
     return 0;
