@@ -3,6 +3,7 @@
 #include "../inc/io.h"
 #include "../inc/timer.h"
 #include "../inc/bin_tree.h"
+#include "../inc/balanced_tree.h"
 
 int main(int argc, char **argv)
 {
@@ -42,24 +43,25 @@ int main(int argc, char **argv)
     {
         if (tree_find(bin_tree, arr[i]) == NULL)
         {
-            bin_tree = tree_insert(bin_tree, arr[i]);
+            bin_tree = tree_insert(bin_tree, arr[i], no_balance);
         }
     }
     timer.end = tick();
     printf("The binary tree was built in %llu ticks\n", get_time(timer));
     draw_tree_hor(bin_tree, 0, NULL, 0);
 
-//    tree_node_t *balanced_tree = NULL;
-//    timer.start = tick();
-//    for (int i = 0; i < file_len; i++)
-//    {
-//        if (tree_find(balanced_tree, arr[i]) == NULL)
-//        {
-//            balanced_tree = tree_insert_b(balanced_tree, arr[i]);
-//        }
-//    }
-//    timer.end = tick();
-//    printf("The binary tree was balanced in %llu ticks\n", get_time(timer));
+    tree_node_t *balanced_tree = NULL;
+    timer.start = tick();
+    for (int i = 0; i < file_len; i++)
+    {
+        if (tree_find(balanced_tree, arr[i]) == NULL)
+        {
+            balanced_tree = tree_insert(balanced_tree, arr[i], balance_node);
+        }
+    }
+    timer.end = tick();
+    printf("The binary tree was balanced in %llu ticks\n", get_time(timer));
+    draw_tree_hor(balanced_tree, 0, NULL, 0);
 
     return 0;
 }

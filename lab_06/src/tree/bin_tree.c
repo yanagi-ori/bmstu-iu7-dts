@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "../../inc/bin_tree.h"
+#include "../../inc/balanced_tree.h"
 
 #define NUM_OF_SPACES    5
 
@@ -50,8 +51,12 @@ tree_node_t *init_node(int val)
     return node;
 }
 
+tree_node_t *no_balance(tree_node_t *tree)
+{
+    return tree;
+}
 
-tree_node_t *tree_insert(tree_node_t *tree, int val)
+tree_node_t *tree_insert(tree_node_t *tree, int val, tree_node_t *(*func)(tree_node_t *))
 {
     if (tree == NULL)
     {
@@ -60,14 +65,14 @@ tree_node_t *tree_insert(tree_node_t *tree, int val)
 
     if (val < tree->data)
     {
-        tree->left = tree_insert(tree->left, val);
+        tree->left = tree_insert(tree->left, val, func);
     }
     else
     {
-        tree->right = tree_insert(tree->right, val);
+        tree->right = tree_insert(tree->right, val, func);
     }
 
-    return tree;
+    return func(tree);
 }
 
 void draw_tree_hor(tree_node_t *tree, int depth, char *path, int right)
