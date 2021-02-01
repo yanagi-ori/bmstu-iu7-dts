@@ -19,4 +19,6 @@ tree_node_t *tree_find(tree_node_t *tree, int key);
 
 tree_node_t *tree_insert(tree_node_t *tree, int val);
 
+void draw_tree_hor(tree_node_t *tree, int depth, char *path, int right);
+
 #endif //LAB_06_BIN_TREE_H

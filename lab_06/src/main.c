@@ -46,8 +46,20 @@ int main(int argc, char **argv)
         }
     }
     timer.end = tick();
-    printf("The binary bin_tree was built in %llu ticks\n", get_time(timer));
+    printf("The binary tree was built in %llu ticks\n", get_time(timer));
+    draw_tree_hor(bin_tree, 0, NULL, 0);
 
+//    tree_node_t *balanced_tree = NULL;
+//    timer.start = tick();
+//    for (int i = 0; i < file_len; i++)
+//    {
+//        if (tree_find(balanced_tree, arr[i]) == NULL)
+//        {
+//            balanced_tree = tree_insert_b(balanced_tree, arr[i]);
+//        }
+//    }
+//    timer.end = tick();
+//    printf("The binary tree was balanced in %llu ticks\n", get_time(timer));
 
     return 0;
 }
