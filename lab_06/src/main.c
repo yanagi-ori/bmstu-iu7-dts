@@ -4,6 +4,7 @@
 #include "../inc/timer.h"
 #include "../inc/bin_tree.h"
 #include "../inc/balanced_tree.h"
+#include "../inc/hash_table.h"
 
 int main(int argc, char **argv)
 {
@@ -63,5 +64,39 @@ int main(int argc, char **argv)
     printf("The binary tree was balanced in %llu ticks\n", get_time(timer));
     draw_tree_hor(balanced_tree, 0, NULL, 0);
 
+    unsigned int table_size = next_prime((unsigned) file_len);
+    timer.start = tick();
+    hash_func_simple(1234, table_size);
+    timer.end = tick();
+    printf("Simple hashtable generation in %llu ticks\n", get_time(timer));
+
+    timer.start = tick();
+    hash_func_complicated(1234, table_size);
+    timer.end = tick();
+    printf("Complicated hashtable generation in %llu ticks\n", get_time(timer));
+
+    hash_table_t *table = ht_init(table_size);
+
+    int coll = 0;
+
+    timer.start = tick();
+    for (int i = 0; i < file_len; i++)
+    {
+        int tmp_coll = hash_insert(table, arr[i], hash_func_simple);
+        if (tmp_coll == HASH_END)
+        {
+            return HASH_END;
+        }
+        coll = coll > tmp_coll ? coll : tmp_coll;
+    }
+
+    timer.end = tick();
+
+    ht_print(table);
+
+    printf("Max number of collisions: %d\n", coll);
+    printf("Hashtable was generated in %llu ticks.\n", get_time(timer));
+
+    ht_clean(table);
     return 0;
 }
