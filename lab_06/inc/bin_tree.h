@@ -12,7 +12,7 @@ struct tree_node
     int data;
     tree_node_t *left;
     tree_node_t *right;
-    int height_difference;
+    int crit;
 };
 
 tree_node_t *tree_find(tree_node_t *tree, int key);

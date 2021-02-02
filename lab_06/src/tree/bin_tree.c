@@ -43,7 +43,7 @@ tree_node_t *init_node(int val)
         return NULL;
     }
 
-    node->height_difference = 1;
+    node->crit = 1;
     node->data = val;
     node->left = NULL;
     node->right = NULL;

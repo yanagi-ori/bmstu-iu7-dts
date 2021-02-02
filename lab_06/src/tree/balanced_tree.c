@@ -7,7 +7,7 @@
 
 int get_height(tree_node_t *tree)
 {
-    return (tree) ? tree->height_difference : 0;
+    return (tree) ? tree->crit : 0;
 }
 
 int tree_bfactor(tree_node_t *tree)
@@ -20,7 +20,7 @@ void tree_fix_height(tree_node_t *p)
     int hl = get_height(p->left);
     int hr = get_height(p->right);
 
-    p->height_difference = (hl > hr ? hl : hr) + 1;
+    p->crit = (hl > hr ? hl : hr) + 1;
 }
 
 tree_node_t *tree_rotate_left(tree_node_t *q)
