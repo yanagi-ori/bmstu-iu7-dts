@@ -123,6 +123,25 @@ int main(int argc, char **argv)
                tree_search_performance_test(bin_tree, arr, file_len));
         printf("Average number of comparisons for every number in tree %f\n\n",
                tree_search_cmp_avg(bin_tree, arr, file_len));
+
+
+        timer.start = tick();
+        comparisons = tree_find_cmp(balanced_tree, user_search);
+        timer.end = tick();
+        printf("Search results in balanced binary tree: \n");
+        if (comparisons > 0){
+            printf("The number \"%d\" was found in %llu CPU ticks\n", user_search, get_time(timer));
+        }
+        else
+        {
+            printf("The number wasn't found in the tree\n");
+        }
+        printf("The number of comparisons: %d\n", comparisons);
+        printf("The size of binary tree data: %zu bytes\n", sizeof(tree_node_t) * file_len);
+        printf("It takes %llu CPU ticks in average to find any number in binary tree\n",
+               tree_search_performance_test(balanced_tree, arr, file_len));
+        printf("Average number of comparisons for every number in tree %f\n\n",
+               tree_search_cmp_avg(balanced_tree, arr, file_len));
     }
     else
     {
