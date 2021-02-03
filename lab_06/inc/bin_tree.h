@@ -23,4 +23,6 @@ void draw_tree_hor(tree_node_t *tree, int depth, char *path, int right);
 
 tree_node_t *no_balance(tree_node_t *tree);
 
+int tree_find_cmp(tree_node_t *tree, int key);
+
 #endif //LAB_06_BIN_TREE_H

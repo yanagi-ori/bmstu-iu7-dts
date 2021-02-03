@@ -166,3 +166,31 @@ void draw_tree_hor(tree_node_t *tree, int depth, char *path, int right)
         draw_tree_hor(tree->left, depth, path, 0);
     }
 }
+
+int tree_find_cmp(tree_node_t *tree, int key)
+{
+    if (tree == NULL)
+    {
+        return 0;
+    }
+
+    int cmps = 0;
+    if (tree->data == key)
+    {
+        return 1;
+    }
+    else if (tree->data < key)
+    {
+        cmps = tree_find_cmp(tree->right, key);
+        return cmps > 0 ? cmps + 1 : cmps;
+    }
+    else if (tree->data > key)
+    {
+        cmps = tree_find_cmp(tree->left, key);
+        return cmps > 0 ? cmps + 1 : cmps;
+    }
+    else
+    {
+        return 0;
+    }
+}

@@ -97,6 +97,32 @@ int main(int argc, char **argv)
     printf("Max number of collisions: %d\n", coll);
     printf("Hashtable was generated in %llu ticks.\n", get_time(timer));
 
+
+    printf("Enter the number you wanna find:\n");
+    int user_search;
+    int rc = scanf("%d", &user_search);
+    if (rc == 1)
+    {
+
+        timer.start = tick();
+        int comparisons = tree_find_cmp(bin_tree, user_search);
+        timer.end = tick();
+
+        printf("Search results in binary tree: \n");
+        printf("The number \"%d\" was found in %llu CPU ticks\n", user_search, get_time(timer));
+        printf("The number of comparisons: %d\n", comparisons);
+        printf("The size of binary tree data: %zu bytes\n", sizeof(tree_node_t) * file_len);
+        printf("It takes %llu CPU ticks in average to find any number in binary tree\n",
+               tree_search_performance_test(bin_tree, arr, file_len));
+        printf("Average number of comparisons for every number in tree %f\n\n",
+               tree_search_cmp_avg(bin_tree, arr, file_len));
+    }
+    else
+    {
+        fprintf(stderr, "Entered invalid number");
+    }
+
+
     ht_clean(table);
     return 0;
 }
