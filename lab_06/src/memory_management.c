@@ -15,7 +15,7 @@ int *create_dyn_array(int len)
 int resize_array(int **array, int *new_len)
 {
     *new_len *= 2;
-    int *temp_array = realloc(*array, *new_len);
+    int *temp_array = realloc(*array, sizeof(int) * (*new_len));
     if (temp_array == NULL)
     {
         free(*array);
