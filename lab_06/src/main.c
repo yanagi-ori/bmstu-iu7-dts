@@ -109,7 +109,14 @@ int main(int argc, char **argv)
         timer.end = tick();
 
         printf("Search results in binary tree: \n");
-        printf("The number \"%d\" was found in %llu CPU ticks\n", user_search, get_time(timer));
+        if (comparisons > 0)
+        {
+            printf("The number \"%d\" was found in %llu CPU ticks\n", user_search, get_time(timer));
+        }
+        else
+        {
+            printf("The number wasn't found in the tree\n");
+        }
         printf("The number of comparisons: %d\n", comparisons);
         printf("The size of binary tree data: %zu bytes\n", sizeof(tree_node_t) * file_len);
         printf("It takes %llu CPU ticks in average to find any number in binary tree\n",
