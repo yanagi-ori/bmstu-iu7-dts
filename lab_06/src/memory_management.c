@@ -3,6 +3,7 @@
 //
 
 #include <stdlib.h>
+#include "../inc/bin_tree.h"
 #include "../inc/memory_management.h"
 #include "../inc/errors.h"
 
@@ -25,3 +26,13 @@ int resize_array(int **array, int *new_len)
     return 0;
 }
 
+
+void free_tree(tree_node_t *tree)
+{
+    if (tree)
+    {
+        free_tree(tree->left);
+        free_tree(tree->right);
+        free(tree);
+    }
+}

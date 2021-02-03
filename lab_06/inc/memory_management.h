@@ -9,4 +9,6 @@ int *create_dyn_array(int len);
 
 int resize_array(int **array, int *new_len);
 
+void free_tree(tree_node_t *tree);
+
 #endif //LAB_06_MEMORY_MANAGEMENT_H

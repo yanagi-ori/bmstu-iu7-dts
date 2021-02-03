@@ -2,9 +2,9 @@
 #include "../inc/errors.h"
 #include "../inc/io.h"
 #include "../inc/timer.h"
-#include "../inc/bin_tree.h"
 #include "../inc/balanced_tree.h"
 #include "../inc/hash_table.h"
+#include "../inc/memory_management.h"
 
 int main(int argc, char **argv)
 {
@@ -129,7 +129,8 @@ int main(int argc, char **argv)
         comparisons = tree_find_cmp(balanced_tree, user_search);
         timer.end = tick();
         printf("Search results in balanced binary tree: \n");
-        if (comparisons > 0){
+        if (comparisons > 0)
+        {
             printf("The number \"%d\" was found in %llu CPU ticks\n", user_search, get_time(timer));
         }
         else
@@ -149,6 +150,8 @@ int main(int argc, char **argv)
     }
 
 
+    free_tree(bin_tree);
+    free_tree(balanced_tree);
     ht_clean(table);
     return 0;
 }
