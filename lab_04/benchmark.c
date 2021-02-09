@@ -105,8 +105,8 @@ void calculate_eff(int size)
     uint64_t time_res2 = (end - start);
     size_t size_arr = arr->size * sizeof(char *) + sizeof(size_t) * 2;
     size_t size_list = size * sizeof(stack_list_t);
-    printf("%7d |      %"PRId64 "      |     %"PRId64 "    |", size, time_res1, time_res2);
-    printf("           %2"PRId64 "%%          |     %8I64d       |    %8I64d       |                     %I64d%%|\n",
+    printf("%7d | %20"PRId64 " | %17"PRId64 " |", size, time_res1, time_res2);
+    printf(" %21"PRId64 "%% |     %8I64d       |    %8I64d       | %22I64d%% |\n",
            100 - time_res1 * 100 / time_res2,
            size_arr, size_list, 100 - size_arr * 100 / size_list);
 }
@@ -115,12 +115,18 @@ void benchmark()
 {
     puts("Processing time is time for push and time for pop");
     puts("   SIZE |    ARRAY STACK TICKS |  LIST STACK TICKS | ARRAY STACK EFFICIENCY "
-         "| ARRAY STACK MEMORY | LIST STACK MEMORY | ARRAY MEMORY EFFICIENCY|");
+         "| ARRAY STACK MEMORY | LIST STACK MEMORY | ARRAY MEMORY EFFICIENCY |");
     puts("----------------------------------------------------------------------------------"
-         "-------------------------------------------------------------");
+         "--------------------------------------------------------------");
     calculate_eff(1);
     calculate_eff(10);
+    calculate_eff(40);
+    calculate_eff(41);
     calculate_eff(50);
+    calculate_eff(60);
+    calculate_eff(70);
+    calculate_eff(79);
+    calculate_eff(81);
     calculate_eff(100);
     calculate_eff(500);
     calculate_eff(1000);
