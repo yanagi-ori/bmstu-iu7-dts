@@ -5,6 +5,8 @@
 #ifndef LAB_06_MEMORY_MANAGEMENT_H
 #define LAB_06_MEMORY_MANAGEMENT_H
 
+#include "bin_tree.h"
+
 int *create_dyn_array(int len);
 
 int resize_array(int **array, int *new_len);

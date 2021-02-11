@@ -11,5 +11,6 @@
 #define INVALID_FILE -4
 #define INVALID_HASH_FUNC -5
 #define HASH_END -6
+#define NOT_FOUND -7
 
 #endif //LAB_06_ERRORS_H

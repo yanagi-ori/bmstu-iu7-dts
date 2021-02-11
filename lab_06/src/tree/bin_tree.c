@@ -5,9 +5,11 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "../../inc/bin_tree.h"
+#include <stdbool.h>
 #include "../../inc/balanced_tree.h"
 
 #define NUM_OF_SPACES    5
+
 
 tree_node_t *tree_find(tree_node_t *tree, int key)
 {
@@ -32,6 +34,16 @@ tree_node_t *tree_find(tree_node_t *tree, int key)
     }
 
     return NULL;
+}
+
+tree_node_t *min_node(tree_node_t *tree)
+{
+    tree_node_t *current = tree;
+    while (current && current->left)
+    {
+        current = current->left;
+    }
+    return current;
 }
 
 tree_node_t *init_node(int val)
@@ -167,30 +179,45 @@ void draw_tree_hor(tree_node_t *tree, int depth, char *path, int right)
     }
 }
 
-int tree_find_cmp(tree_node_t *tree, int key)
+tree_node_t *tree_delete_cmp(tree_node_t *tree, int key, int *cmps, bool *status)
 {
     if (tree == NULL)
     {
-        return 0;
+        return tree;
     }
-
-    int cmps = 0;
-    if (tree->data == key)
+    if (key < tree->data)
     {
-        return 1;
+        (*cmps)++;
+        tree->left = tree_delete_cmp(tree->left, key, cmps, status);
     }
-    else if (tree->data < key)
+    else if (key > tree->data)
     {
-        cmps = tree_find_cmp(tree->right, key);
-        return cmps > 0 ? cmps + 1 : cmps;
+        (*cmps)++;
+        tree->right = tree_delete_cmp(tree->right, key, cmps, status);
     }
-    else if (tree->data > key)
+    else if (tree->left != NULL && tree->right != NULL)
     {
-        cmps = tree_find_cmp(tree->left, key);
-        return cmps > 0 ? cmps + 1 : cmps;
+        *status = true;
+        tree->data = min_node(tree->right)->data;
+        tree->right = tree_delete_cmp(tree->right, tree->data, cmps, status);
     }
     else
     {
-        return 0;
+        if (!tree->left)
+        {
+            *status = true;
+            tree = tree->left;
+        }
+        else if (!tree->right && tree->left)
+        {
+            *status = true;
+            tree = tree->right;
+        }
+        else
+        {
+            *status = true;
+            tree = NULL;
+        }
     }
+    return tree;
 }
