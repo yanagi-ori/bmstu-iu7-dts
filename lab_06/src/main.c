@@ -120,10 +120,10 @@ int main(int argc, char **argv)
         }
         printf("The number of comparisons: %d\n", comparisons);
         printf("The size of binary tree data: %zu bytes\n", sizeof(tree_node_t) * file_len);
-        printf("It takes %llu CPU ticks in average to find any number in binary tree\n",
+        printf("It takes %llu CPU ticks in average to delete any number in binary tree\n",
                tree_search_performance_test(arr, file_len, no_balance));
         printf("Average number of comparisons for every number in tree %f\n\n",
-               tree_search_cmp_avg(bin_tree, arr, file_len));
+               tree_search_cmp_avg(arr, file_len, no_balance));
 
 
         timer.start = tick();
@@ -142,10 +142,10 @@ int main(int argc, char **argv)
             printf("The number \"%d\" was deleted in %llu CPU ticks\n", user_search, get_time(timer));
         }
         printf("The number of comparisons: %d\n", comparisons);
-        printf("It takes %llu CPU ticks in average to find any number in balanced binary tree\n",
+        printf("It takes %llu CPU ticks in average to delete any number in balanced binary tree\n",
                tree_search_performance_test(arr, file_len, balance_node));
         printf("Average number of comparisons for every number in balanced tree %f\n\n",
-               tree_search_cmp_avg(balanced_tree, arr, file_len));
+               tree_search_cmp_avg(arr, file_len, balance_node));
 
 
         printf("Search results in hashtable:\n");
