@@ -8,8 +8,6 @@
 #include "../inc/hash_table.h"
 #include "../inc/errors.h"
 
-int max_collisions;
-
 int is_prime(int num)
 {
     if (num < 2)
@@ -81,18 +79,6 @@ unsigned hash_func_complicated(int val, unsigned int len)
     unsigned N = len;
     double A = 0.618033;
     int h = N * fmod(key * A, 1);
-
-    /*
-     int key = val;
-
-     key += ~(key << 16);
-     key ^= (key >> 5);
-     key += (key << 3);
-     key ^= (key >> 13);
-     key += ~(key << 9);
-     key ^= (key >> 17);
-     */
-
     return h % len;
 }
 
@@ -111,14 +97,14 @@ void ht_clean(hash_table_t *ht)
 
 int find_free_element(hash_table_t *ht, unsigned *ind, int *i, int val)
 {
-    while (*ind < ht->len && ht->arr[*ind].free && ht->arr[*ind].val != val)
+    while (*ind < ht->len && ht->arr[*ind].status && ht->arr[*ind].val != val)
     {
         (*ind)++;
         (*i)++;
     }
     if (*ind >= ht->len)
     {
-        return 4;
+        return HASH_END;
     }
     else
     {
@@ -127,7 +113,7 @@ int find_free_element(hash_table_t *ht, unsigned *ind, int *i, int val)
 }
 
 
-int hash_insert(hash_table_t *ht, const int val, unsigned (*hash_func)(int, unsigned))
+int ht_insert(hash_table_t *ht, const int val, unsigned (*hash_func)(int, unsigned))
 {
     int res;
 
@@ -138,11 +124,11 @@ int hash_insert(hash_table_t *ht, const int val, unsigned (*hash_func)(int, unsi
 
     unsigned ind = hash_func(val, ht->len);
 
-    printf("hash[%d] = %d (%d)\n", ind, ht->arr[ind].val, val);
+    //printf("hash[%d] = %d (%d)\n", ind, ht->arr[ind].val, val);
 
     if (ht->arr[ind].val == val)
     {
-        ht->arr[ind].free = 1;
+        ht->arr[ind].status = 1;
         return 0;
     }
     int coll = 0;
@@ -154,7 +140,7 @@ int hash_insert(hash_table_t *ht, const int val, unsigned (*hash_func)(int, unsi
 
 
     ht->arr[ind].val = val;
-    ht->arr[ind].free = 1;
+    ht->arr[ind].status = 1;
 
     res = coll;
 
@@ -168,7 +154,7 @@ void ht_print(const hash_table_t *ht)
     printf("|     hash   |      data       |\n");
     for (int i = 0; i < ht->len; i++)
     {
-        if (ht->arr[i].free)
+        if (ht->arr[i].status)
         {
             printf("+-----------+------------------+\n");
             printf("|%7d    |  %7d         |\n", i, ht->arr[i].val);
@@ -177,3 +163,49 @@ void ht_print(const hash_table_t *ht)
     printf("+-----------+------------------+\n");
 }
 
+int find_element(hash_table_t *ht, unsigned *ind, short *cmps, int key)
+{
+    while ((*ind) < ht->len && (*cmps)++ >= 0 && ht->arr[*ind].val != key)
+    {
+        (*ind)++;
+    }
+    if (*ind == ht->len - 1)
+    {
+        return NOT_FOUND;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+short ht_find(hash_table_t *ht, int key, unsigned (*hash_func)(int, unsigned))
+{
+    if (hash_func == NULL)
+    {
+        return INVALID_HASH_FUNC;
+    }
+
+    unsigned ind = hash_func(key, ht->len);
+    if (ht->arr[ind].val == key && ht->arr[ind].status)
+    {
+        return 1;
+    }
+    else
+    {
+        short cmps = 0;
+        int rc = find_element(ht, &ind, &cmps, key);
+        if (rc == NOT_FOUND)
+        {
+            return NOT_FOUND;
+        }
+        if (ht->arr[ind].val == key && ht->arr[ind].status)
+        {
+            return ++cmps;
+        }
+        else
+        {
+            return NOT_FOUND;
+        }
+    }
+}

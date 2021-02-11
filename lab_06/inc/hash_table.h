@@ -5,10 +5,12 @@
 #ifndef LAB_06_HASH_TABLE_H
 #define LAB_06_HASH_TABLE_H
 
+#include <stdbool.h>
+
 typedef struct hash_item
 {
     int val;
-    int free;
+    bool status;
 } hash_item_t;
 
 typedef struct hash_table
@@ -27,8 +29,10 @@ unsigned hash_func_complicated(int val, unsigned int len);
 
 void ht_clean(hash_table_t *ht);
 
-int hash_insert(hash_table_t *ht, const int val, unsigned (*hash_func)(int, unsigned));
+int ht_insert(hash_table_t *ht, const int val, unsigned (*hash_func)(int, unsigned));
 
 void ht_print(const hash_table_t *ht);
+
+short ht_find(hash_table_t *ht, int key, unsigned (*hash_func)(int, unsigned));
 
 #endif //LAB_06_HASH_TABLE_H
