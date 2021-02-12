@@ -50,6 +50,7 @@ int main(int argc, char **argv)
     timer.end = tick();
     printf("The binary tree was built in %llu ticks\n", get_time(timer));
     draw_tree_hor(bin_tree, 0, NULL, 0);
+    printf("\n");
 
     tree_node_t *balanced_tree = NULL;
     timer.start = tick();
@@ -63,6 +64,7 @@ int main(int argc, char **argv)
     timer.end = tick();
     printf("The binary tree was balanced in %llu ticks\n", get_time(timer));
     draw_tree_hor(balanced_tree, 0, NULL, 0);
+    printf("\n");
 
     unsigned int table_size = next_prime((unsigned) file_len);
     timer.start = tick();
@@ -158,7 +160,11 @@ int main(int argc, char **argv)
         {
             unsigned (*hash_func)(int, unsigned) = hash_func_simple;
             comparisons = ht_find(table, user_search, hash_func);
-            if (comparisons > limit || comparisons <= 0)
+            if (comparisons <= 0)
+            {
+                printf("The number wasn't found in the hashtable\n");
+            }
+            else if (comparisons > limit)
             {
                 printf("The number of comparisons got over the limit you entered. Restructuring the table...\n");
                 while (comparisons > limit || comparisons <= 0)
@@ -178,7 +184,7 @@ int main(int argc, char **argv)
                     timer.end = tick();
                     printf("Restructured in %llu CPU ticks\nChecking the performance...\n", get_time(timer));
                     timer.start = tick();
-                    comparisons = ht_find(table, user_search, hash_func_simple);
+                    comparisons = ht_find(table, user_search, hash_func_complicated);
                     timer.end = tick();
                     if (comparisons > limit || comparisons <= 0)
                     {
@@ -188,20 +194,36 @@ int main(int argc, char **argv)
                 }
             }
 
-            int hash_e_size = sizeof(hash_item_t);
-            int hash_t_size = sizeof(hash_table_t);
-            printf("The number of comparisons: %d\n", comparisons);
-            printf("The size of binary tree data: %llu bytes\n",
+            if (comparisons > 0)
+            {
+                printf("The number of comparisons: %d\n", comparisons);
+            }
+            printf("The size of hashtable: %llu bytes\n",
                    sizeof(hash_item_t) * table->len + sizeof(hash_table_t));
-            printf("It takes %llu CPU ticks in average to find any number in binary tree\n",
-                   ht_search_performance_test(table, arr, file_len, hash_func));
-            printf("Average number of comparisons for every number in tree %f\n\n",
-                   ht_search_cmp_avg(table, arr, file_len, hash_func));
+            printf("It takes %llu CPU ticks in average to find any number in hashtable\n",
+                   htDelPerformanceTest(arr, file_len, hash_func));
+            printf("Average number of comparisons for every number in hashtable %f\n\n",
+                   htDelCmpAvg(arr, file_len, hash_func));
         }
         else
         {
             fprintf(stderr, "Entered invalid limit number");
         }
+
+        timer.start = tick();
+        file_mod_del(&file, user_search, argv[1], &comparisons, &deleted);
+        timer.end = tick();
+        printf("Operation result in file:\n");
+        printf("The number of comparisons: %d\n", comparisons);
+        if (deleted == false)
+        {
+            printf("The number wasn't found in the tree\n");
+        }
+        else
+        {
+            printf("The number \"%d\" was deleted in %llu CPU ticks\n", user_search, get_time(timer));
+        }
+
 
     }
     else
@@ -209,9 +231,51 @@ int main(int argc, char **argv)
         fprintf(stderr, "Entered invalid number");
     }
 
+    int menu;
+    while (true)
+    {
+        printf("Enter the option:\n"
+               "1 - Print binary search tree;\n"
+               "2 - Print balanced binary search tree\n"
+               "3 - Print hashtable\n"
+               "0 - Exit");
+        rc = scanf("%d", &menu);
+        if (rc != 1)
+        {
+            free_tree(bin_tree);
+            free_tree(balanced_tree);
+            ht_clean(table);
+            printf("Wrong menu item. Exiting...\n");
+            return 1;
+        }
+        switch (menu)
+        {
+            case 1:
+                draw_tree_hor(bin_tree, 0, NULL, 0);
+                printf("\n");
+                break;
+            case 2:
+                draw_tree_hor(balanced_tree, 0, NULL, 0);
+                printf("\n");
+                break;
+            case 3:
+                ht_print(table);
+                break;
+            case 0:
+                printf("exit.\n");
+                free_tree(bin_tree);
+                free_tree(balanced_tree);
+                ht_clean(table);
+                return 0;
+            default:
+                free_tree(bin_tree);
+                free_tree(balanced_tree);
+                ht_clean(table);
+                printf("Wrong menu item. Exiting...\n");
+                return 1;
+        }
+    }
 
-    free_tree(bin_tree);
-    free_tree(balanced_tree);
-    ht_clean(table);
+
     return 0;
 }

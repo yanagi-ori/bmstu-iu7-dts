@@ -5,6 +5,7 @@
 #include "../inc/bin_tree.h"
 #include "../inc/hash_table.h"
 #include "../inc/timer.h"
+#include "../inc/errors.h"
 #include <stdint.h>
 
 uint64_t tick(void)
@@ -85,26 +86,54 @@ float tree_search_cmp_avg(int *arr, int len, tree_node_t *(*func)(tree_node_t *)
     return (float) cmps / (float) len;
 }
 
-uint64_t ht_search_performance_test(hash_table_t *ht, int *arr, int len, unsigned hash_func(int, unsigned))
+uint64_t htDelPerformanceTest(int *arr, int len, unsigned int (*hash_func)(int, unsigned int))
 {
-    uint64_t start = tick();
+    uint64_t total = 0;
 
     for (int i = 0; i < len; i++)
     {
-        ht_find(ht, arr[i], hash_func);
+        hash_table_t *table = ht_init(len);
+        for (int j = 0; j < len; j++)
+        {
+            int tmp_coll = ht_insert(table, arr[j], hash_func_simple);
+            if (tmp_coll == HASH_END)
+            {
+                return HASH_END;
+            }
+        }
+
+        uint64_t start = tick();
+
+        ht_find(table, arr[i], hash_func);
+
+        uint64_t end = tick();
+
+        total += end - start;
+        ht_clean(table);
     }
 
-    uint64_t end = tick();
-
-    return (end - start) / len;
+    return (total) / len;
 }
 
-float ht_search_cmp_avg(hash_table_t *ht, int *arr, int len, unsigned hash_func(int, unsigned))
+float htDelCmpAvg(int *arr, int len, unsigned int (*hash_func)(int, unsigned int))
 {
     int cmps = 0;
     for (int i = 0; i < len; i++)
     {
-        cmps += ht_find(ht, arr[i], hash_func);
+        hash_table_t *table = ht_init(len);
+        for (int j = 0; j < len; j++)
+        {
+            ht_insert(table, arr[j], hash_func_simple);
+        }
+
+        int temp = ht_find(table, arr[i], hash_func);
+        if (temp > 0)
+        {
+            cmps += temp;
+        }
+
+        ht_clean(table);
     }
+
     return (float) cmps / (float) len;
 }

@@ -62,3 +62,45 @@ int data_extract(FILE *file_stream, int **array)
 
     return length;
 }
+
+
+int file_mod_del(FILE **file, int key, char *file_path, int *cmps, bool *deleted)
+{
+    rewind(*file);
+    int curr_val;
+    char temp_str[41];
+    int res;
+    int i = 1;
+    *cmps = 0;
+    *deleted = false;
+    FILE *temp = fopen("temp.txt", "w");
+
+    res = fscanf(*file, "%d", &curr_val);
+    itoa(curr_val, temp_str, 10);
+
+    while (res == 1 && i++ > 0)
+    {
+        if (curr_val != key)
+        {
+            (*cmps)++;
+            fprintf(temp, temp_str);
+            fprintf(temp, " ");
+        }
+        else
+        {
+            *deleted = true;
+        }
+        res = fscanf(*file, "%d", &curr_val);
+        itoa(curr_val, temp_str, 10);
+    }
+
+    fclose(*file);
+    fclose(temp);
+
+    remove(file_path);
+    rename("temp.txt", file_path);
+
+    *file = fopen(file_path, "r");
+
+    return i;
+}

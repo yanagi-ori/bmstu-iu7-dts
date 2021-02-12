@@ -11,6 +11,7 @@ typedef struct hash_item
 {
     int val;
     bool status;
+    bool deleted;
 } hash_item_t;
 
 typedef struct hash_table

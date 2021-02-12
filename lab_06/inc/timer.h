@@ -23,8 +23,8 @@ uint64_t tree_search_performance_test(int *arr, int len, tree_node_t *(*func)(tr
 
 float tree_search_cmp_avg(int *arr, int len, tree_node_t *(*func)(tree_node_t *));
 
-uint64_t ht_search_performance_test(hash_table_t *ht, int *arr, int len, unsigned hash_func(int, unsigned));
+uint64_t htDelPerformanceTest(int *arr, int len, unsigned int (*hash_func)(int, unsigned int));
 
-float ht_search_cmp_avg(hash_table_t *ht, int *arr, int len, unsigned hash_func(int, unsigned));
+float htDelCmpAvg(int *arr, int len, unsigned int (*hash_func)(int, unsigned int));
 
 #endif //LAB_06_TIMER_H

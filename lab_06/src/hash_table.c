@@ -61,7 +61,7 @@ hash_table_t *ht_init(unsigned int len)
 
     ht->len = len;
 
-    printf("Memory allocated: %zu\n", sizeof(hash_item_t) * len + sizeof(hash_table_t));
+    //printf("Memory allocated: %zu\n", sizeof(hash_item_t) * len + sizeof(hash_table_t));
 
     return ht;
 }
@@ -128,7 +128,8 @@ int ht_insert(hash_table_t *ht, const int val, unsigned (*hash_func)(int, unsign
 
     if (ht->arr[ind].val == val)
     {
-        ht->arr[ind].status = 1;
+        ht->arr[ind].status = true;
+        ht->arr[ind].status = false;
         return 0;
     }
     int coll = 0;
@@ -140,7 +141,8 @@ int ht_insert(hash_table_t *ht, const int val, unsigned (*hash_func)(int, unsign
 
 
     ht->arr[ind].val = val;
-    ht->arr[ind].status = 1;
+    ht->arr[ind].status = true;
+    ht->arr[ind].deleted = false;
 
     res = coll;
 
@@ -154,7 +156,7 @@ void ht_print(const hash_table_t *ht)
     printf("|     hash   |      data       |\n");
     for (int i = 0; i < ht->len; i++)
     {
-        if (ht->arr[i].status)
+        if (ht->arr[i].status && !ht->arr[i].deleted)
         {
             printf("+-----------+------------------+\n");
             printf("|%7d    |  %7d         |\n", i, ht->arr[i].val);
@@ -165,9 +167,13 @@ void ht_print(const hash_table_t *ht)
 
 int find_element(hash_table_t *ht, unsigned *ind, short *cmps, int key)
 {
-    while ((*ind) < ht->len && (*cmps)++ >= 0 && ht->arr[*ind].val != key)
+    while ((*ind) < ht->len && (*cmps)++ >= 0)
     {
         (*ind)++;
+        if (ht->arr[*ind].val == key && ht->arr[*ind].deleted == false)
+        {
+            break;
+        }
     }
     if (*ind == ht->len - 1)
     {
@@ -187,8 +193,9 @@ short ht_find(hash_table_t *ht, int key, unsigned (*hash_func)(int, unsigned))
     }
 
     unsigned ind = hash_func(key, ht->len);
-    if (ht->arr[ind].val == key && ht->arr[ind].status)
+    if (ht->arr[ind].val == key && ht->arr[ind].status && !ht->arr[ind].deleted)
     {
+        ht->arr[ind].deleted = true;
         return 1;
     }
     else
@@ -199,8 +206,9 @@ short ht_find(hash_table_t *ht, int key, unsigned (*hash_func)(int, unsigned))
         {
             return NOT_FOUND;
         }
-        if (ht->arr[ind].val == key && ht->arr[ind].status)
+        if (ht->arr[ind].val == key && ht->arr[ind].status && !ht->arr->deleted)
         {
+            ht->arr[ind].deleted = true;
             return ++cmps;
         }
         else
