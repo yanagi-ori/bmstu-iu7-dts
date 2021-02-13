@@ -155,9 +155,9 @@ short vector_manual_filling(matrix_t *matrix, const int size)
 
 short matrix_filling(matrix_t *matrix, sparse_matrix_t *sparse_matrix, const bool manual_input)
 {
-    short rc;
     if (manual_input == true)
     {
+        short rc;
         if (sparse_matrix->rows == 1)
         {
             rc = vector_manual_filling(matrix, sparse_matrix->curr_size);
