@@ -265,7 +265,7 @@ void compare_results(matrix_t std_matrix, sparse_matrix_t sparse_matrix,
            std_matrix.rows, std_matrix.columns, amount);
     printf("\nNormal multiplication time: %Ild ticks\nSparse matrix multiplication time: %Ild ticks\n",
            std_end - std_start, sparse_end - std_end);
-    printf("\nMemory footprint:\nRegular matrix (one):% lu\nSparse matrix (one):% lu\n",
+    printf("\nMemory footprint:\nRegular matrix (one):% zu\nSparse matrix (one):% zu\n",
            sizeof(int) * std_matrix.rows * std_matrix.columns,
            2 * sizeof(int) * curr_size + sizeof(node_t) * std_matrix.columns);
 }
