@@ -18,10 +18,10 @@ void init_vector(sparse_matrix_t *vector, const int size)
 
 short create_sparse_matrix(sparse_matrix_t *sparse_matrix, int *a, int *ja, linked_list_t *list)
 {
-    short rc;
 
     if (sparse_matrix->rows != 1)
     {
+        short rc;
         if ((rc = create_liked_list(sparse_matrix->columns, list)))
         {
             free_linked_list(list);
