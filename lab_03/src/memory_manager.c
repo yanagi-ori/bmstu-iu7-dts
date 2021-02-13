@@ -38,7 +38,6 @@ void free_matrix(int **matrix)
 {
     free(matrix[0]);
     free(matrix);
-    *matrix = NULL;
 }
 
 
