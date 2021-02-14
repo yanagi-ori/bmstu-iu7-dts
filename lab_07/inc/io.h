@@ -5,6 +5,6 @@
 #ifndef LAB_07_IO_H
 #define LAB_07_IO_H
 
-unsigned long get_file_size(FILE *file);
+unsigned long getFileSize(FILE *file);
 
 #endif //LAB_07_IO_H

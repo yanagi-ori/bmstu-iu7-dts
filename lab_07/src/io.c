@@ -7,7 +7,7 @@
 #include "../inc/graph.h"
 #include "../inc/memory_management.h"
 
-unsigned long get_file_size(FILE *file)
+unsigned long getFileSize(FILE *file)
 {
     fseek(file, 0L, SEEK_END);
     unsigned long size = ftell(file);
