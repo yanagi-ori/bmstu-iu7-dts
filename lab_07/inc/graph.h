@@ -9,8 +9,10 @@
 
 typedef struct node
 {
-    int dist;
-    int weight;
+    unsigned dist;
     bool visited;
 } node_t;
+
+node_t *init_node();
+
 #endif //LAB_07_GRAPH_H

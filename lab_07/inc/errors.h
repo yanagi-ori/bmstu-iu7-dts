@@ -8,5 +8,6 @@
 #define WRONG_ARGUMENTS         -1
 #define IO_ERROR                -2
 #define MEMORY_MANAGEMENT_ERROR -3
+#define INPUT_ERROR             -4
 
 #endif //LAB_07_ERRORS_H

@@ -6,6 +6,8 @@
 #include "../inc/io.h"
 #include "../inc/graph.h"
 #include "../inc/memory_management.h"
+#include "../inc/errors.h"
+#include "../inc/table.h"
 
 unsigned long getFileSize(FILE *file)
 {
@@ -16,28 +18,31 @@ unsigned long getFileSize(FILE *file)
     return size;
 }
 
-node_t **fileRead(FILE *file)
+int fileRead(FILE *file, node_t ***array, int ***table, int *num)
 {
     if (!file)
     {
         fprintf(file, "Could not access the file. Shutting down");
-        return NULL;
+        return IO_ERROR;
     }
 
-    int num;
-    int rc = fscanf(file, "%d", &num);
+    *num = 0;
+    int rc = fscanf(file, "%d", num);
     if (rc != 1)
     {
         fprintf(stderr, "Could not get the num of nodes. Shutting down");
-        return NULL;
+        return INPUT_ERROR;
     }
 
-    node_t **table = create_matrix(num, num);
-    if (!table)
+    *table = createMatrix(*num, *num);
+    if (!(*table))
     {
         fprintf(stderr, "Couldn't create the table. Shutting down...");
-        return NULL;
+        return MEMORY_MANAGEMENT_ERROR;
     }
+
+    initTable(*table, *num);
+
 
     while (true)
     {
@@ -51,12 +56,26 @@ node_t **fileRead(FILE *file)
 
         if (res != 3)
         {
-            fprintf(stderr, "Ошибка ввода.\n");
-            free_matrix(table);
-            return NULL;
+            fprintf(stderr, "Input error.\n");
+            freeMatrix(*table);
+            return INPUT_ERROR;
+        }
+
+        if (weight <= 0)
+        {
+            fprintf(stderr, "Input error. Weight couldn't be less or equal to zero.\n");
+            freeMatrix(*table);
+            return INPUT_ERROR;
+        }
+
+        if (fillCell(*table, from, to, weight, *num) == -1)
+        {
+            fprintf(stderr, "Input error.");
+            freeMatrix(*table);
+            return INPUT_ERROR;
         }
 
     }
 
-    return table;
+    return 0;
 }

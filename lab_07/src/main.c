@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "../inc/errors.h"
 #include "../inc/io.h"
+#include "../inc/table.h"
 
 int main(int argc, char **argv)
 {
@@ -17,10 +18,26 @@ int main(int argc, char **argv)
         return IO_ERROR;
     }
 
-    if (get_file_size(file) <= 0)
+    if (getFileSize(file) <= 0)
     {
         fprintf(stderr, "The file is empty");
         return IO_ERROR;
+    }
+
+    int **table;
+    node_t **array;
+    int num;
+
+    int rc = fileRead(file, &array, &table, &num);
+
+    if (rc != 0)
+    {
+        printf("%d\n", rc);
+    }
+    else
+    {
+        printf("Data was loaded\n");
+        printTable(table, num);
     }
 
     fclose(file);

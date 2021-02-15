@@ -6,9 +6,20 @@
 #include "../inc/graph.h"
 #include "../inc/memory_management.h"
 
-node_t **create_matrix(int rows, int cols)
+void initTable(int **table, int size)
 {
-    node_t **pointers, *data;
+    for (int i = 0; i < size; i++)
+    {
+        for (int j = 0; j < size; j++)
+        {
+            table[i][j] = 0;
+        }
+    }
+}
+
+int **createMatrix(int rows, int cols)
+{
+    int **pointers, *data;
 
     if (rows <= 0 || cols <= 0)
     {
@@ -36,8 +47,19 @@ node_t **create_matrix(int rows, int cols)
     return pointers;
 }
 
-void free_matrix(node_t **matrix)
+void freeMatrix(int **matrix)
 {
     free(matrix[0]);
     free(matrix);
+}
+
+node_t **createArray(int num)
+{
+    node_t **temp = malloc(sizeof(node_t *) * num);
+    for (int i = 0; i < num; i++)
+    {
+        temp[i] = init_node();
+    }
+
+    return temp;
 }
