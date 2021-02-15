@@ -9,10 +9,14 @@
 
 typedef struct node
 {
-    unsigned dist;
+    int dist;
     bool visited;
 } node_t;
 
-node_t *init_node();
+node_t *initNode();
+
+void printArray(node_t **array, int num);
+
+int dijkstra(int **table, node_t **array, int num);
 
 #endif //LAB_07_GRAPH_H

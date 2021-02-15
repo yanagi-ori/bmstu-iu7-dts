@@ -58,7 +58,7 @@ node_t **createArray(int num)
     node_t **temp = malloc(sizeof(node_t *) * num);
     for (int i = 0; i < num; i++)
     {
-        temp[i] = init_node();
+        temp[i] = initNode();
     }
 
     return temp;

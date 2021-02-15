@@ -3,14 +3,19 @@
 //
 
 #include <stdlib.h>
+#include <stdio.h>
+#include <limits.h>
 #include "../inc/graph.h"
 
-node_t *init_node()
+node_t *initNode()
 {
     node_t *node = malloc(sizeof(node_t));
 
-    node->dist = 0 - 1;
-    node->visited = false;
+    if (node)
+    {
+        node->dist = INT_MAX;
+        node->visited = false;
+    }
 
     return node;
 }

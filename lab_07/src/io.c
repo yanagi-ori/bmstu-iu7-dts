@@ -18,7 +18,7 @@ unsigned long getFileSize(FILE *file)
     return size;
 }
 
-int fileRead(FILE *file, node_t ***array, int ***table, int *num)
+int fileRead(FILE *file, int ***table, int *num)
 {
     if (!file)
     {

@@ -9,6 +9,6 @@
 
 unsigned long getFileSize(FILE *file);
 
-int fileRead(FILE *file, node_t ***array, int ***table, int *num);
+int fileRead(FILE *file, int ***table, int *num);
 
 #endif //LAB_07_IO_H

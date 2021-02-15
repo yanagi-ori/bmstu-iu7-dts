@@ -2,6 +2,8 @@
 #include "../inc/errors.h"
 #include "../inc/io.h"
 #include "../inc/table.h"
+#include "../inc/memory_management.h"
+
 
 int main(int argc, char **argv)
 {
@@ -28,7 +30,7 @@ int main(int argc, char **argv)
     node_t **array;
     int num;
 
-    int rc = fileRead(file, &array, &table, &num);
+    int rc = fileRead(file, &table, &num);
 
     if (rc != 0)
     {
@@ -40,6 +42,31 @@ int main(int argc, char **argv)
         printTable(table, num);
     }
 
+    array = createArray(num);
+    printArray(array, num);
+
+    printf("-------------------------------------------\n\n");
+
+
+    printf("Input begin index:\n");
+    int begin_index = 0;
+    rc = fscanf(stdin, "%d", &begin_index);
+    if (rc != 1)
+    {
+        fprintf(stderr, "Invalid input");
+        return INPUT_ERROR;
+    }
+    else
+    {
+        array[begin_index]->dist = 0;
+    }
+
+    dijkstra(table, array, num);
+
+    printArray(array, num);
+
+    freeMatrix(table);
+    freeArray(array, num);
     fclose(file);
 
     return 0;
