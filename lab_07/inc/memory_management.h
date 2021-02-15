@@ -13,4 +13,6 @@ void initTable(int **table, int size);
 
 node_t **createArray(int num);
 
+void freeArray(node_t **array, int num);
+
 #endif //LAB_07_MEMORY_MANAGEMENT_H

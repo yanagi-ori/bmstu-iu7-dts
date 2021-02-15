@@ -63,3 +63,12 @@ node_t **createArray(int num)
 
     return temp;
 }
+
+void freeArray(node_t **array, int num)
+{
+    for (int i = 0; i < num; i++)
+    {
+        free(array[i]);
+    }
+    free(array);
+}
