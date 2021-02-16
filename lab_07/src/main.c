@@ -93,6 +93,7 @@ int main(int argc, char **argv)
         file = fopen("graph.txt", "w");
         graph_to_jpeg(file, table, array, "Ooops", num, limit);
         printArray(array, num);
+        fclose(file);
     }
 
 
