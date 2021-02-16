@@ -128,7 +128,7 @@ int ht_insert(hash_table_t *ht, const int val, unsigned (*hash_func)(int, unsign
 
     if (ht->arr[ind].val == val)
     {
-        ht->arr[ind].status = true;
+        //ht->arr[ind].status = true;
         ht->arr[ind].status = false;
         return 0;
     }

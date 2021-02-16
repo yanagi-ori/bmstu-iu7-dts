@@ -183,9 +183,9 @@ int main(int argc, char **argv)
                     }
                     timer.end = tick();
                     printf("Restructured in %llu CPU ticks\nChecking the performance...\n", get_time(timer));
-                    timer.start = tick();
+                    //timer.start = tick();
                     comparisons = ht_find(table, user_search, hash_func_complicated);
-                    timer.end = tick();
+                    //timer.end = tick();
                     if (comparisons > limit || comparisons <= 0)
                     {
                         printf("The number (%d) of comparisons got over the limit you entered. "
