@@ -67,3 +67,24 @@ int dijkstra(int **table, node_t **array, int num)
 
     return 0;
 }
+
+
+void graph_to_jpeg(FILE *file, int **table, node_t **array, char *name, int num, int limit)
+{
+    int temp = 0;
+    fprintf(file, "digraph %s {\n", name);
+    fprintf(file, "edge [dir=\"both\"];\n");
+    for (int i = 0; i < num; i++)
+    {
+        for (int j = 0; j < temp; j++)
+        {
+            if (array[i]->dist <= limit && array[j]->dist <= limit)
+            {
+                fprintf(file, "%d -> %d;\n", j, i);
+            }
+        }
+        temp++;
+    }
+
+    fprintf(file, "}\n");
+}

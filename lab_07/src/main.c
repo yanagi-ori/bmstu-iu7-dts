@@ -35,12 +35,14 @@ int main(int argc, char **argv)
     if (rc != 0)
     {
         printf("%d\n", rc);
+        return rc;
     }
     else
     {
         printf("Data was loaded\n");
         printTable(table, num);
     }
+    fclose(file);
 
     array = createArray(num);
     printArray(array, num);
@@ -61,9 +63,32 @@ int main(int argc, char **argv)
         array[begin_index]->dist = 0;
     }
 
-    dijkstra(table, array, num);
+    printf("Input the maximum length: ");
+    int limit;
+    rc = scanf("%d", &limit);
+    if (rc != 1)
+    {
+        fprintf(stderr, "Invalid input. No valid number was got");
+        return INPUT_ERROR;
+    }
+    else if (limit < 0)
+    {
+        fprintf(stderr, "Invalid input. The max len could not be negative");
+        return INPUT_ERROR;
+    }
+    else if (limit == 0)
+    {
+        fprintf(stderr, "Warning. A maximum of zero means that only the starting point is available,"
+                        "and the algorithm would not be executed.\n");
+    }
+    else
+    {
+        dijkstra(table, array, num);
+        file = fopen("graph.txt", "w");
+        graph_to_jpeg(file, table, array, "Ooops", num, limit);
+        printArray(array, num);
+    }
 
-    printArray(array, num);
 
     freeMatrix(table);
     freeArray(array, num);
