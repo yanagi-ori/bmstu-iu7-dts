@@ -128,7 +128,7 @@ int main()
                     append_arr_queue(&queueArr, (float) i);
                 }
                 end = tick();
-                printf("Append in array: %llu ticks in average\n", (end - start) / iterations);
+                printf("Append in array: %lu ticks in average\n", (end - start) / iterations);
 
                 start = tick();
                 for (short i = 0; i < iterations; i++)
@@ -136,11 +136,11 @@ int main()
                     append_list_queue(&queueList, (float) i);
                 }
                 end = tick();
-                printf("Append in list: %llu ticks in average\n", (end - start) / iterations);
+                printf("Append in list: %lu ticks in average\n", (end - start) / iterations);
 
-                printf("Size of array realization %lu Bytes in average\n",
+                printf("Size of array realization %zu Bytes in average\n",
                        sizeof(queueArr) / 1000);
-                printf("Size of list realization %lu Bytes in average\n",
+                printf("Size of list realization %zu Bytes in average\n",
                        sizeof(queueList) + 999 * (sizeof(node_t)) / 1000);
 
                 start = tick();
@@ -149,7 +149,7 @@ int main()
                     remove_arr_queue(&queueArr);
                 }
                 end = tick();
-                printf("Pop in array: %llu ticks in average\n", (end - start) / iterations);
+                printf("Pop in array: %lu ticks in average\n", (end - start) / iterations);
 
                 start = tick();
                 for (short i = 0; i < iterations; i++)
@@ -157,7 +157,7 @@ int main()
                     remove_list_queue(&queueList);
                 }
                 end = tick();
-                printf("Pop in list: %llu ticks in average\n", (end - start) / iterations);
+                printf("Pop in list: %lu ticks in average\n", (end - start) / iterations);
 
                 free_list(*queueList.head);
 
