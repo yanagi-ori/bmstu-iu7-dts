@@ -22,7 +22,7 @@ int fileRead(FILE *file, int ***table, int *num)
 {
     if (!file)
     {
-        fprintf(file, "Could not access the file. Shutting down");
+        fprintf(stderr, "Could not access the file. Shutting down");
         return IO_ERROR;
     }
 
