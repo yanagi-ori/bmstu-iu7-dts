@@ -22,7 +22,7 @@ int main(int argc, char **argv)
         return IO_ERROR;
     }
 
-    if (getFileSize(file) <= 0)
+    if (getFileSize(file) == 0)
     {
         fprintf(stderr, "The file is empty");
         return IO_ERROR;

@@ -33,11 +33,10 @@ int dijkstra(int **table, node_t **array, int num)
 {
     int temp;
     int min_index = INT_MAX;
-    int min;
     do
     {
         min_index = INT_MAX;
-        min = INT_MAX;
+        int min = INT_MAX;
 
         for (int i = 0; i < num; i++)
         {
@@ -71,9 +70,7 @@ int dijkstra(int **table, node_t **array, int num)
 
 void graph_to_jpeg(FILE *file, int **table, node_t **array, char *name, int num, int limit)
 {
-    int temp = 0;
     fprintf(file, "digraph %s {\n", name);
-    //fprintf(file, "edge [dir=\"both\"];\n");
     for (int i = 0; i < num; i++)
     {
         for (int j = i + 1; j < num; j++)
