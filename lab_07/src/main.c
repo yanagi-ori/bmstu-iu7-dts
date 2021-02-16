@@ -22,7 +22,7 @@ int main(int argc, char **argv)
         return IO_ERROR;
     }
 
-    if (getFileSize(file) == 0)
+    if (getFileSize(file) <= 0)
     {
         fprintf(stderr, "The file is empty");
         return IO_ERROR;
@@ -88,7 +88,7 @@ int main(int argc, char **argv)
         uint64_t start = tick();
         dijkstra(table, array, num);
         uint64_t end = tick();
-        printf("\n\nDijkstra algorithm was processed in %lu CPU ticks\n\n", end - start);
+        printf("Dijkstra algorithm was processed in %lu CPU ticks\n", end - start);
 
         file = fopen("graph.txt", "w");
         graph_to_jpeg(file, table, array, "Ooops", num, limit);
@@ -98,7 +98,6 @@ int main(int argc, char **argv)
 
     freeMatrix(table);
     freeArray(array, num);
-    fclose(file);
 
     return 0;
 }
