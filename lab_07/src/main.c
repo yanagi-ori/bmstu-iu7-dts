@@ -1,8 +1,10 @@
 #include <stdio.h>
+#include <stdint.h>
 #include "../inc/errors.h"
 #include "../inc/io.h"
 #include "../inc/table.h"
 #include "../inc/memory_management.h"
+#include "../inc/timer.h"
 
 
 int main(int argc, char **argv)
@@ -83,7 +85,11 @@ int main(int argc, char **argv)
     }
     else
     {
+        uint64_t start = tick();
         dijkstra(table, array, num);
+        uint64_t end = tick();
+        printf("\n\nDijkstra algorithm was processed in %lu CPU ticks\n\n", end - start);
+
         file = fopen("graph.txt", "w");
         graph_to_jpeg(file, table, array, "Ooops", num, limit);
         printArray(array, num);
