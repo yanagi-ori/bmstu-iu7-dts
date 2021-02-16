@@ -141,7 +141,7 @@ int main(int argc, char **argv)
         }
         else
         {
-            printf("The number \"%d\" was deleted in %llu CPU ticks\n", user_search, get_time(timer));
+            printf("The number \"%d\" was deleted in %lu CPU ticks\n", user_search, get_time(timer));
         }
         printf("The number of comparisons: %d\n", comparisons);
         printf("It takes %lu CPU ticks in average to delete any number in balanced binary tree\n",
@@ -198,7 +198,7 @@ int main(int argc, char **argv)
             {
                 printf("The number of comparisons: %d\n", comparisons);
             }
-            printf("The size of hashtable: %llu bytes\n",
+            printf("The size of hashtable: %lu bytes\n",
                    sizeof(hash_item_t) * table->len + sizeof(hash_table_t));
             printf("It takes %lu CPU ticks in average to find any number in hashtable\n",
                    htDelPerformanceTest(arr, file_len, hash_func));
@@ -279,4 +279,3 @@ int main(int argc, char **argv)
 
     return 0;
 }
-    
