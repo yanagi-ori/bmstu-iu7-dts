@@ -73,17 +73,17 @@ void graph_to_jpeg(FILE *file, int **table, node_t **array, char *name, int num,
 {
     int temp = 0;
     fprintf(file, "digraph %s {\n", name);
-    fprintf(file, "edge [dir=\"both\"];\n");
+    //fprintf(file, "edge [dir=\"both\"];\n");
     for (int i = 0; i < num; i++)
     {
-        for (int j = 0; j < temp; j++)
+        for (int j = i + 1; j < num; j++)
         {
-            if (array[i]->dist <= limit && array[j]->dist <= limit)
+            if (array[i]->dist <= limit && array[j]->dist <= limit && table[i][j] > 0 && array[i]->dist + table[i][j]
+                                                                                         <= array[j]->dist)
             {
-                fprintf(file, "%d -> %d;\n", j, i);
+                fprintf(file, "%d -> %d [label=%d];\n", i, j, table[i][j]);
             }
         }
-        temp++;
     }
 
     fprintf(file, "}\n");
