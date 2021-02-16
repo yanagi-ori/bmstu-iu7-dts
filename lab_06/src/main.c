@@ -48,7 +48,7 @@ int main(int argc, char **argv)
         }
     }
     timer.end = tick();
-    printf("The binary tree was built in %llu ticks\n", get_time(timer));
+    printf("The binary tree was built in %lu ticks\n", get_time(timer));
     draw_tree_hor(bin_tree, 0, NULL, 0);
     printf("\n");
 
@@ -62,7 +62,7 @@ int main(int argc, char **argv)
         }
     }
     timer.end = tick();
-    printf("The binary tree was balanced in %llu ticks\n", get_time(timer));
+    printf("The binary tree was balanced in %lu ticks\n", get_time(timer));
     draw_tree_hor(balanced_tree, 0, NULL, 0);
     printf("\n");
 
@@ -70,12 +70,12 @@ int main(int argc, char **argv)
     timer.start = tick();
     hash_func_simple(1234, table_size);
     timer.end = tick();
-    printf("Simple hash function generation in %llu ticks\n", get_time(timer));
+    printf("Simple hash function generation in %lu ticks\n", get_time(timer));
 
     timer.start = tick();
     hash_func_complicated(1234, table_size);
     timer.end = tick();
-    printf("Complicated hash function generation in %llu ticks\n", get_time(timer));
+    printf("Complicated hash function generation in %lu ticks\n", get_time(timer));
 
     hash_table_t *table = ht_init(table_size);
 
@@ -97,7 +97,7 @@ int main(int argc, char **argv)
     ht_print(table);
 
     printf("Max number of collisions: %d\n", coll);
-    printf("Hashtable was generated in %llu ticks.\n", get_time(timer));
+    printf("Hashtable was generated in %lu ticks.\n", get_time(timer));
 
 
     printf("Enter the number you wanna delete:\n");
@@ -114,7 +114,7 @@ int main(int argc, char **argv)
         printf("Search results in binary tree: \n");
         if (deleted == true)
         {
-            printf("The number \"%d\" was deleted in %llu CPU ticks\n", user_search, get_time(timer));
+            printf("The number \"%d\" was deleted in %lu CPU ticks\n", user_search, get_time(timer));
         }
         else
         {
@@ -122,7 +122,7 @@ int main(int argc, char **argv)
         }
         printf("The number of comparisons: %d\n", comparisons);
         printf("The size of binary tree data: %zu bytes\n", sizeof(tree_node_t) * file_len);
-        printf("It takes %llu CPU ticks in average to delete any number in binary tree\n",
+        printf("It takes %lu CPU ticks in average to delete any number in binary tree\n",
                tree_search_performance_test(arr, file_len, no_balance));
         printf("Average number of comparisons for every number in tree %f\n\n",
                tree_search_cmp_avg(arr, file_len, no_balance));
@@ -144,7 +144,7 @@ int main(int argc, char **argv)
             printf("The number \"%d\" was deleted in %llu CPU ticks\n", user_search, get_time(timer));
         }
         printf("The number of comparisons: %d\n", comparisons);
-        printf("It takes %llu CPU ticks in average to delete any number in balanced binary tree\n",
+        printf("It takes %lu CPU ticks in average to delete any number in balanced binary tree\n",
                tree_search_performance_test(arr, file_len, balance_node));
         printf("Average number of comparisons for every number in balanced tree %f\n\n",
                tree_search_cmp_avg(arr, file_len, balance_node));
@@ -154,7 +154,7 @@ int main(int argc, char **argv)
         printf("Enter the limit of comparisons: \n");
         int temp = user_search;
         short limit;
-        rc = scanf("%d", &limit);
+        rc = scanf("%hi", &limit);
         user_search = temp;
         if (rc == 1 && limit > 0)
         {
@@ -182,10 +182,10 @@ int main(int argc, char **argv)
                         ht_insert(table, arr[i], hash_func);
                     }
                     timer.end = tick();
-                    printf("Restructured in %llu CPU ticks\nChecking the performance...\n", get_time(timer));
-                    //timer.start = tick();
+                    printf("Restructured in %lu CPU ticks\nChecking the performance...\n", get_time(timer));
+                    timer.start = tick();
                     comparisons = ht_find(table, user_search, hash_func_complicated);
-                    //timer.end = tick();
+                    timer.end = tick();
                     if (comparisons > limit || comparisons <= 0)
                     {
                         printf("The number (%d) of comparisons got over the limit you entered. "
@@ -200,7 +200,7 @@ int main(int argc, char **argv)
             }
             printf("The size of hashtable: %llu bytes\n",
                    sizeof(hash_item_t) * table->len + sizeof(hash_table_t));
-            printf("It takes %llu CPU ticks in average to find any number in hashtable\n",
+            printf("It takes %lu CPU ticks in average to find any number in hashtable\n",
                    htDelPerformanceTest(arr, file_len, hash_func));
             printf("Average number of comparisons for every number in hashtable %f\n\n",
                    htDelCmpAvg(arr, file_len, hash_func));
@@ -279,3 +279,4 @@ int main(int argc, char **argv)
 
     return 0;
 }
+    
